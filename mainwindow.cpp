@@ -1,0 +1,1196 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------主函数-----------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    //基本设置
+    setAcceptDrops(true);// 设置之后才能拖拽文件到窗口
+    videowidget->setMouseTracking(1);//设置播放容器的鼠标追踪
+    QList<QWidget*> labelList = videowidget->findChildren<QWidget*>();//找出videowidget的所有子控件，将他们的鼠标追踪设置为1
+    for(int i = 0; i < labelList.size(); i++)
+    {
+        labelList.at(i)->setMouseTracking(1);
+    }
+
+    ui->VideoScreenLabel->installEventFilter(this);//播放标签设置事件过滤器
+    ui->AudioWidget->installEventFilter(this);
+    ui->PlayListWidget->setVisible(0);
+    ui->AudioWidget->setVisible(0);  
+    ui->LRCWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); //垂直滚动条
+
+    FunctionWidgetTimer=new QTimer(this);//定义功能栏定时器
+    FunctionWidgetTimer->setInterval(5000);//设置间隔为5s
+
+    LoadLocalCache();//载入数据
+
+    //连接操作
+    connect(FunctionWidgetTimer,SIGNAL(timeout()),this,SLOT(on_timer_timeout()));//关联定时器与定时器槽函数
+
+    m_sliderstate = false;
+    connect(ui->ProgressSlider, &PlayerSlider::mousepress, [=](int val){
+        m_sliderstate = true;
+        PlayOrStopTag = 0;
+        player->pause();
+        qDebug() << "progress slider pressed by mouse" << val;
+    });
+    connect(ui->ProgressSlider, &PlayerSlider::mouserelease, [=](int val){
+        m_sliderstate = false;
+        player->setPosition(val*1000);
+        ui->ProgressSlider->setValue(val*1000);
+        PlayOrStopTag = 1;
+        player->play();
+        qint64 playtime = player->position();
+        qDebug() << "progress slider released by mouse" << val;
+    });
+
+    connect(ui->ListWidget,SIGNAL(ItemDragSignal()),this,SLOT(UpdateCurrentAudioOrVedio()));
+    connect(&Volumew,SIGNAL(VolumeSignal(int)),this,SLOT(SetVolumeValue(int)));
+
+    //子窗口
+
+    //qDebug()<<isAudioOrVideo("interviewer.mp3");
+//    Audio TempAudio("C:\\Users\\hikari\\Desktop\\Download\\interviewer.mp3");
+//    AudioVector.append(TempAudio);
+//    qDebug()<<FindAudioOrVideoByName("interviewer.mp3");
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------辅助函数---------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+//播放视频
+void MainWindow::PlayVedio(QString file)
+{
+//    if(file==" ")//单曲播放中，下一个为空
+//    {
+//        return;
+//    }
+
+//    AVFormatContext    *pFormatCtx;
+//    int                i, videoindex;
+//    AVCodecContext    *pCodecCtx;
+//    AVCodec            *pCodec;
+//    AVFrame    *pFrame, *pFrameRGB;
+//    unsigned char *out_buffer;
+//    AVPacket *packet;
+//    int ret, got_picture;
+//    struct SwsContext *img_convert_ctx;
+
+//    int l=file.length();
+//    char* filepath;
+//    filepath=new char[l];
+//    for(int i=0;i<l;i++)
+//    {
+//        filepath[i]=file[i].toLatin1();
+//    }
+//    filepath[l]='\0';
+
+//    QFileInfo f(file);
+//    if(f.isFile()==0)
+//    {
+//        QMessageBox::critical(this, tr("错误"), tr("文件不存在"));
+//        return;
+//    }
+
+//    //初始化编解码库
+////    av_register_all();//创建AVFormatContext对象，与码流相关的结构。
+//    pFormatCtx = avformat_alloc_context();
+//    //初始化pFormatCtx结构
+//    if (avformat_open_input(&pFormatCtx, filepath, NULL, NULL) != 0){
+//        printf("Couldn't open input stream.\n");
+//        return ;
+//    }
+//    //获取音视频流数据信息
+//    if (avformat_find_stream_info(pFormatCtx, NULL) < 0){
+//        printf("Couldn't find stream information.\n");
+//        return ;
+//    }
+//    videoindex = -1;
+//    //nb_streams视音频流的个数，这里当查找到视频流时就中断了。
+//    for (i = 0; i < pFormatCtx->nb_streams; i++)
+//        if (pFormatCtx->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO){
+//            videoindex = i;
+//            break;
+//    }
+//    if (videoindex == -1){
+//        printf("Didn't find a video stream.\n");
+//        return ;
+//    }
+//    //获取视频流编码结构
+//    pCodecCtx = pFormatCtx->streams[videoindex]->codec;
+//    //查找解码器
+//    pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
+//    if (pCodec == NULL){
+//        printf("Codec not found.\n");
+//        return ;
+//    }
+//    //用于初始化pCodecCtx结构
+//    if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0){
+//        printf("Could not open codec.\n");
+//        return ;
+//    }
+//    //创建帧结构，此函数仅分配基本结构空间，图像数据空间需通过av_malloc分配
+//    pFrame = av_frame_alloc();
+//    pFrameRGB = av_frame_alloc();
+//    //创建动态内存,创建存储图像数据的空间
+//    //av_image_get_buffer_size获取一帧图像需要的大小
+//    out_buffer = (unsigned char *)av_malloc(av_image_get_buffer_size(AV_PIX_FMT_RGB32, pCodecCtx->width, pCodecCtx->height, 1));
+//    av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, out_buffer,
+//        AV_PIX_FMT_RGB32, pCodecCtx->width, pCodecCtx->height, 1);
+
+//    packet = (AVPacket *)av_malloc(sizeof(AVPacket));
+//    //Output Info-----------------------------
+//    printf("--------------- File Information ----------------\n");
+//    //此函数打印输入或输出的详细信息
+//    av_dump_format(pFormatCtx, 0, filepath, 0);
+//    printf("-------------------------------------------------\n");
+//    //初始化img_convert_ctx结构
+//    img_convert_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt,
+//        pCodecCtx->width, pCodecCtx->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, NULL, NULL, NULL);
+//    //av_read_frame读取一帧未解码的数据
+//    while (av_read_frame(pFormatCtx, packet) >= 0){
+//        //如果是视频数据
+//        if (packet->stream_index == videoindex){
+//            //解码一帧视频数据
+//            ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
+//            if (ret < 0){
+//                printf("Decode Error.\n");
+//                return ;
+//            }
+//            if (got_picture){
+//                sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height,
+//                    pFrameRGB->data, pFrameRGB->linesize);
+//                QImage img((uchar*)pFrameRGB->data[0],pCodecCtx->width,pCodecCtx->height,QImage::Format_RGB32);
+//                ui->VideoScreenLabel->setPixmap(QPixmap::fromImage(img));
+//                Delay(40/PlayRate);
+//            }
+//        }
+//        av_free_packet(packet);
+//    }
+//    sws_freeContext(img_convert_ctx);
+//    av_frame_free(&pFrameRGB);
+//    av_frame_free(&pFrame);
+//    avcodec_close(pCodecCtx);
+//    avformat_close_input(&pFormatCtx);
+//    QString NextAudioOrVedio=getNextAudioOrVedio();
+//    PlayVedio(NextAudioOrVedio);
+}
+
+void MainWindow::PlayAudioAndVedio(QString file)
+{
+    player->stop();
+    if(file==" ")//单曲播放中，下一个为空
+    {
+        return;
+    }
+
+    int l=file.length();
+    char* filepath;
+    filepath=new char[l];
+    for(int i=0;i<l;i++)
+    {
+        filepath[i]=file[i].toLatin1();
+    }
+    filepath[l]='\0';
+
+    QFileInfo f(file);
+    if(f.isFile()==0)
+    {
+        QMessageBox::critical(this, tr("错误"), tr("未选中文件"));
+        return;
+    }
+
+
+    /*界面设置*/
+    if(isAudioOrVideo(f.fileName())==1)
+    {
+        ui->AudioWidget->setVisible(0);
+        ui->VideoScreenLabel->setVisible(1);
+        NowPlayType=1;//将当前播放的类型设置为视频
+    }
+    else if(isAudioOrVideo(f.fileName())==2)
+    {
+        ui->AudioInfoLabel->clear();
+        ui->LRCWidget->clear();
+        ui->AudioWidget->setVisible(1);
+        ui->WaveLabel->setVisible(0);
+        ui->VideoScreenLabel->setVisible(0);
+        if(!AudioVector[FindAudioOrVideoByName(f.fileName())].cover.isNull())//如果文件存在
+        {
+            ui->AlbumCoverLabel->setPixmap(QPixmap::fromImage(AudioVector[FindAudioOrVideoByName(f.fileName())].cover).scaled(ui->MainWidget->size()/2,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
+        }
+        else
+        {
+            ui->AlbumCoverLabel->setPixmap(QPixmap::fromImage(QImage(":/images/MusicAlbums.png")).scaled(ui->MainWidget->size()/2));
+        }
+        setListWidgetLRC(f.fileName());
+        NowPlayType=2;//将当前播放的类型设置为音频
+    }
+    PlayOrStopTag=1;//设置播放状态为“正在播放”
+    ui->PlayButton->setIcon(QIcon(":/images/Stop.png"));//设置图标
+
+    /*播放设置*/
+    layout->setContentsMargins(0,0,0,0);
+    player->setSource(QUrl::fromLocalFile(filepath));  //打开音视频流文件
+    videowidget->resize(ui->VideoScreenLabel->size());  //把视频输出图像的大小重新调整为label的大小
+    //指定视频播放的位置
+    layout->addWidget(videowidget);
+    ui->VideoScreenLabel->setLayout(layout);
+
+    player->setVideoOutput(videowidget);  //设置视频输出附加到媒体播放器
+    player->setAudioOutput(audioOutput);
+    player->play();  //开始播放视频
+
+    connect(player, SIGNAL(durationChanged(qint64)), this, SLOT(getduration(qint64)));
+    connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(getposition(qint64)));
+
+    //QString NextAudioOrVedio=getNextAudioOrVedio();
+    //PlayAudioAndVedio(NextAudioOrVedio);
+}
+
+
+
+//获取列表项对应的地址
+QString MainWindow::getListItemFileAddress(QListWidgetItem *item)
+{
+    QStringList SplitList=item->text().split("\t");
+    return SplitList[1];
+}
+
+//索引到下一个音视频的地址
+QString MainWindow::getNextAudioOrVedio()
+{
+    if(CurrentAudioOrVedio==-1)return "";//如果没有任何音视频可以播放，直接返回
+    int PlayListLength=ui->ListWidget->count();
+    QString FileName;
+    if(PlaySeqence==1)
+    {
+        return " ";
+    }
+    else if(PlaySeqence==2)
+    {
+        SetCurrentListItemColor(QColor(255,255,255));
+        CurrentAudioOrVedio=(CurrentAudioOrVedio+1)%PlayListLength;//循环
+        SetCurrentListItemColor(QColor(255,182,193));
+        FileName=ui->ListWidget->item(CurrentAudioOrVedio)->text();
+        if(isAudioOrVideo(FileName)==1)
+        {
+            return VideoVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+        else if(isAudioOrVideo(FileName)==2)
+        {
+            return AudioVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+        //获取指针对应的列表项对应的地址
+    }
+    else if(PlaySeqence==3)
+    {
+        int TempRandNum=QRandomGenerator::global()->bounded(PlayListLength);
+        SetCurrentListItemColor(QColor(255,255,255));
+        CurrentAudioOrVedio=(CurrentAudioOrVedio+TempRandNum)%PlayListLength;//让下一个音视频被选中
+        SetCurrentListItemColor(QColor(255,182,193));
+        FileName=ui->ListWidget->item(CurrentAudioOrVedio)->text();
+        if(isAudioOrVideo(FileName)==1)
+        {
+            return VideoVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+        else if(isAudioOrVideo(FileName)==2)
+        {
+            return AudioVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+    }
+    else if(PlaySeqence==4)
+    {
+        FileName=ui->ListWidget->item(CurrentAudioOrVedio)->text();
+        if(isAudioOrVideo(FileName)==1)
+        {
+            return VideoVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+        else if(isAudioOrVideo(FileName)==2)
+        {
+            return AudioVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+    }
+}
+
+QString MainWindow::getLastAudioOrVedio()
+{
+    if(CurrentAudioOrVedio==-1)return "";//如果没有任何音视频可以播放，直接返回
+    int PlayListLength=ui->ListWidget->count();
+    QString FileName;
+    if(PlaySeqence==1)
+    {
+        return " ";
+    }
+    else if(PlaySeqence==2)
+    {
+        SetCurrentListItemColor(QColor(255,255,255));
+        CurrentAudioOrVedio=(CurrentAudioOrVedio+PlayListLength-1)%PlayListLength;//循环
+        SetCurrentListItemColor(QColor(255,182,193));
+        FileName=ui->ListWidget->item(CurrentAudioOrVedio)->text();
+        if(isAudioOrVideo(FileName)==1)
+        {
+            return VideoVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+        else if(isAudioOrVideo(FileName)==2)
+        {
+            return AudioVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+    }
+    else if(PlaySeqence==3)
+    {
+        SetCurrentListItemColor(QColor(255,255,255));
+        int TempRandNum=QRandomGenerator::global()->bounded(PlayListLength);
+        CurrentAudioOrVedio=(CurrentAudioOrVedio+TempRandNum)%PlayListLength;//让下一个音视频被选中
+        SetCurrentListItemColor(QColor(255,182,193));
+        FileName=ui->ListWidget->item(CurrentAudioOrVedio)->text();
+        if(isAudioOrVideo(FileName)==1)
+        {
+            return VideoVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+        else if(isAudioOrVideo(FileName)==2)
+        {
+            return AudioVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+    }
+    else if(PlaySeqence==4)
+    {
+        FileName=ui->ListWidget->item(CurrentAudioOrVedio)->text();
+        if(isAudioOrVideo(FileName)==1)
+        {
+            return VideoVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+        else if(isAudioOrVideo(FileName)==2)
+        {
+            return AudioVector[FindAudioOrVideoByName(FileName)].GetPath();
+        }
+    }
+}
+
+void MainWindow::SaveLocalCache()
+{
+    QFile* myfile=new QFile("./Cache.txt");//创建一个输出文件的文档
+    if (myfile->open(QFile::WriteOnly|QIODevice::Truncate))//注意WriteOnly是往文本中写入的时候用，ReadOnly是在读文本中内容的时候用，Truncate表示将原来文件中的内容清空
+    {
+        QTextStream out(myfile);
+        for(int i=0;i<ui->ListWidget->count();i++)
+        {
+            QString OutPutString="";
+            QString OutPutFileName=ui->ListWidget->item(i)->text();//文件名在列表中获取
+            QString OutPutFilePath="";
+            QString OutPutLRCPath="";
+            if(isAudioOrVideo(OutPutFileName)==1)//如果文件为视频
+            {
+                OutPutFilePath=VideoVector[FindAudioOrVideoByName(OutPutFileName)].GetPath();//从视频数组中依据文件名获取文件路径
+            }
+            else if(isAudioOrVideo(OutPutFileName)==2)//如果文件为音频
+            {
+                OutPutFilePath=AudioVector[FindAudioOrVideoByName(OutPutFileName)].GetPath();//从音频数组中依据文件名获取文件路径
+                if(AudioVector[FindAudioOrVideoByName(OutPutFileName)].lyricpath!="")
+                {
+                    OutPutLRCPath=AudioVector[FindAudioOrVideoByName(OutPutFileName)].lyricpath;
+                    OutPutLRCPath+="\n";
+                }
+            }
+            OutPutString=OutPutString+OutPutFilePath+"\n"+OutPutLRCPath;
+            out<<OutPutString;//进行输出
+        }
+        out<<"EOF";
+    }
+    myfile->close();
+}
+
+void MainWindow::LoadLocalCache()
+{
+    QFile* myfile=new QFile("./Cache.txt");//创建一个输出文件的文档
+    QString ErrorFileName="";
+    int ErrorTag=0;
+    if (myfile->open(QFile::ReadOnly|QIODevice::Text))
+    {
+        QTextStream out(myfile);
+        while(1)
+        {
+            QString tempstr;
+            tempstr=out.readLine();
+            if(tempstr=="EOF")//如果已经到了缓存文件的最后
+            {
+                break;
+            }
+            else
+            {
+                QFileInfo file(tempstr);//读取文件路径
+                if(file.isFile()==0)//判断文件能否正常打开
+                {//如果不能
+                    ErrorFileName+=file.fileName();
+                    ErrorFileName+="\n";
+                    ErrorTag=1;
+                }
+                else//如果能，加入列表
+                {
+                    if(isAudioOrVideo(file.fileName())==1)//如果是视频
+                    {
+                        Video TempVideo(file.filePath().toLatin1().data());//加入视频数组
+                        VideoVector.append(TempVideo);
+                        ui->ListWidget->addItem(file.fileName());//加入播放列表
+                    }
+                    else if(isAudioOrVideo(file.fileName())==2)//如果是音频
+                    {
+                        Audio TempAudio(file.filePath().toLatin1().data());//加入音频数组
+                        AudioVector.append(TempAudio);
+                        ui->ListWidget->addItem(file.fileName());//加入播放列表
+                    }
+                    else if(isAudioOrVideo(file.fileName())==3)//如果是LRC文件
+                    {
+                        if(!setLRC(file.filePath()))
+                        {
+                            ErrorFileName+=file.fileName();
+                            ErrorFileName+="\n";
+                            ErrorTag=1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if(ErrorTag==1)QMessageBox::critical(this, tr("错误"), tr("以下文件无法获取：\n\n%1").arg(ErrorFileName));//如果出现了错误文件
+    myfile->close();
+    SaveLocalCache();
+}
+
+void MainWindow::AddListItem(QString FileAdd)
+{
+    QFileInfo file(FileAdd);
+    //QString AbsPath=file.absoluteFilePath();//获取绝对路径
+    QString FileName=file.fileName();//获取文件名
+    //QString temp=FileName+"\t"+AbsPath;
+    QString temp=FileName;
+    QListWidgetItem* item=new QListWidgetItem(temp);
+    ui->ListWidget->addItem(item);//添加列表项
+    CurrentAudioOrVedio=ui->ListWidget->count()-1;//设置指针
+}
+
+
+void MainWindow::setget_Alltime(qint64 playtime)
+{
+    playtime /= 1000;
+    ui->ProgressSlider->setMinimum(0);
+    ui->ProgressSlider->setMaximum(playtime);
+
+    m_hour = playtime / 3600;
+    m_min = (playtime - m_hour * 3600) / 60;
+    m_sec = playtime - m_hour * 3600 - m_min * 60;
+    //qDebug() << "duration: " << m_hour << " " << m_min << " " << m_sec;
+    QString str = QString("%1:%2:%3").arg(m_hour).arg(m_min).arg(m_sec);
+    ui->TotalTimeLabel->setText(str);
+}
+
+void MainWindow::setget_currenttime(qint64 playtime)
+{
+    playtime /= 1000;
+    settimeslider(playtime);
+    int h = playtime / 3600;
+    int m = (playtime - h * 3600) / 60;
+    int s = playtime - h * 3600 - m * 60;
+    QString str = QString("%1:%2:%3").arg(h).arg(m).arg(s);
+    ui->CurrentTimeLabel->setText(str);
+    setListCurrentPlayingLRC(playtime);
+    if(player->mediaStatus()==QMediaPlayer::EndOfMedia)
+    {
+        on_NextVedioButton_clicked();
+    }
+}
+
+void MainWindow::settimeslider(qint64 playtime)
+{
+    if(!m_sliderstate)
+        ui->ProgressSlider->setValue(playtime);
+}
+
+
+//播放视频的延迟设置
+//void Delay(int msec)
+//{
+//    QTime dieTime = QTime::currentTime().addMSecs(msec);
+//    while( QTime::currentTime() < dieTime )
+//        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+//}
+
+void MainWindow::AddAudioOrVideo(QString path)
+{
+    QFileInfo FileInfo = QFileInfo(path);
+    QString FileSuffix = FileInfo.suffix();
+    if(isAudioOrVideo(path)==2)//如果是音频
+    {
+        Audio TempAudio(path.toLatin1().data());
+        AudioVector.append(TempAudio);
+    }
+    else if(isAudioOrVideo(path)==1)//如果是视频
+    {
+        Video TempVideo(path.toLatin1().data());
+        VideoVector.append(TempVideo);
+    }
+}
+
+int MainWindow::isAudioOrVideo(QString name)
+{
+    QFileInfo QFI(name);
+    if(QFI.suffix()=="mp4"||QFI.suffix()=="wmv"||QFI.suffix()=="avi")
+    {
+        return 1;
+    }
+    else if(QFI.suffix()=="mp3"||QFI.suffix()=="flac")
+    {
+        return 2;
+    }
+    else if(QFI.suffix()=="lrc")
+    {
+        return 3;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int MainWindow::FindAudioOrVideoByName(QString FileName)
+{
+    if(isAudioOrVideo(FileName)==1)//如果是视频
+    {
+        int i=0;
+        for(;i<VideoVector.length();i++)
+        {
+            if(FileName==VideoVector[i].name)
+            {
+                return i;
+            }
+        }
+        return i;
+    }
+    else if(isAudioOrVideo(FileName)==2)//如果是音频
+    {
+        int i=0;
+        for(;i<AudioVector.length();i++)
+        {
+            if(FileName==AudioVector[i].name)
+            {
+                return i;
+            }
+        }
+        return i;
+    }
+    return -1;
+}
+
+int MainWindow::isFileNameRepeated(QString FileName)
+{
+    for(int i=0;i<VideoVector.length();i++)
+    {
+        if(FileName==VideoVector[i].name)
+        {
+            return 1;
+        }
+    }
+    for(int i=0;i<AudioVector.length();i++)
+    {
+        if(FileName==AudioVector[i].name)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int MainWindow::setLRC(QString file)
+{
+    for(int i=0;i<AudioVector.length();i++)
+    {
+        if(QFileInfo(file).fileName().split(".")[0]==AudioVector[i].name.split(".")[0])
+        {
+            AudioVector[i].lyricpath=file;
+            return 1;
+        }
+    }
+    return 0;
+}
+void MainWindow::setListWidgetLRC(QString FileName)
+{
+    for(int i=0;i<AudioVector.length();i++)
+    {
+        if(AudioVector[i].name==FileName)
+        {
+            ui->LRCWidget->clear();
+            LyricVector.clear();
+            if(AudioVector[i].lyricpath!="")
+            {
+                QFile TempFile(AudioVector[i].lyricpath);
+                TempFile.open(QIODevice::ReadOnly|QIODevice::Text);
+                QByteArray All=TempFile.readAll();
+                QString s(All);
+                QStringList list = s.split("\n");//QString字符串分割函数
+                QString AudioInfo="";
+                for(int i=0;i<list.length()-1;i++)
+                {
+                    QString text=list[i].split("]")[1];
+                    QString textl=list[i].split("]")[0];
+                    if(textl.mid(1,2)=="ti")
+                    {
+                        AudioInfo+="<b><font size=\"4\"> ";
+                        AudioInfo+=textl.mid(4,textl.length()-4);
+                        AudioInfo+="</font></b>";
+                        AudioInfo+="<br>";
+                        continue;
+                    }
+                    if(textl.mid(1,2)=="ar")
+                    {
+                        AudioInfo+="歌手：";
+                        AudioInfo+=textl.mid(4,textl.length()-4);
+                        AudioInfo+="<br>";
+                        continue;
+                    }
+                    if(textl.mid(1,2)=="al")
+                    {
+                        AudioInfo+="专辑：";
+                        AudioInfo+=textl.mid(4,textl.length()-4);
+                        AudioInfo+="<br>";
+                        continue;
+                    }
+                    if(textl.mid(1,2)=="by")
+                    {
+                        continue;
+                    }
+                    if(textl.mid(1,6)=="offset")
+                    {
+                        continue;
+                    }
+                    double time=list[i].split("]")[0].split("[")[1].split(":")[0].toDouble()*60000+list[i].split("]")[0].split("[")[1].split(":")[1].toDouble()*1000;
+                    Lyric TempLRC(time,text);
+                    LyricVector.append(TempLRC);
+                    ui->LRCWidget->addItem(text);
+                }
+                ui->AudioInfoLabel->setText(AudioInfo);
+            }
+            else
+            {
+                ui->LRCWidget->addItem("暂无歌词，敬请欣赏音乐");
+            }
+            break;
+        }
+    }
+    for(int i=0;i<ui->LRCWidget->count();i++)
+    {
+        ui->LRCWidget->item(i)->setTextAlignment(Qt::AlignCenter);
+    }
+}
+
+void MainWindow::setListCurrentPlayingLRC(double sec)
+{
+    double msec=sec*1000;
+    int i=0;
+    for(;i<LyricVector.length();i++)
+    {
+        if(LyricVector[i].time>msec)
+        {
+            break;
+        }
+    }
+    ui->LRCWidget->setCurrentRow(i-1);
+}
+/*-------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------事件函数---------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+//播放标签事件过滤
+bool MainWindow::eventFilter(QObject* obj,QEvent *ev)
+{
+    if(obj==ui->VideoScreenLabel||obj==ui->AudioWidget)//如果鼠标的移动进入了播放标签
+    {
+        if(ev->type()==QEvent::MouseMove&&this->isFullScreen()==1)//如果鼠标在动且处于全屏模式
+        {
+            ui->FunctionWidget->setVisible(1);//功能栏出现
+            FunctionWidgetTimer->stop();//定时器重新计时
+            FunctionWidgetTimer->start();
+            this->setCursor(Qt::ArrowCursor); //显示鼠标
+            return 1;
+        }
+    }
+    return QWidget::eventFilter(obj,ev);
+}
+
+//拖拽进入事件
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    // 拖拽事件触发
+    if( event->mimeData()->hasUrls() )
+    {
+        event->acceptProposedAction();
+    }
+}
+
+//拖拽松开事件
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    int TypeErrorTag=0;//判断是否有读入错误的文件
+    int RepeatedErrorTag=0;//判断文件是否重复
+    int LRCErrorTag=0;//判断歌词文件是否重复
+    // 创建可接受文件类型列表、
+    QString TypeErrorFileName="";
+    QString RepeatedErrorFileName="";
+    QString LRCErrorFileName="";
+    QStringList acceptedFileTypes;
+    acceptedFileTypes<<"mp4"<<"avi"<<"wmv"<<"mp3"<<"flac"<<"lrc";
+    for(int i=0;i<event->mimeData()->urls().count();i++)
+    {
+        // 取到拖拽文件转换成文件
+        QFileInfo file(event->mimeData()->urls().at(i).toLocalFile());
+        // 查看文件后缀名  是否在列表acceptedFileTypes中
+        if(acceptedFileTypes.contains(file.suffix().toLower()))
+        {
+            if(!isFileNameRepeated(file.fileName()))//如果文件名没有重复
+            {
+                if(isAudioOrVideo(file.fileName())==1)
+                {
+                    Video TempVideo(file.filePath().toLatin1().data());
+                    VideoVector.append(TempVideo);
+                    AddListItem(event->mimeData()->urls().at(i).toLocalFile());// 让程序 同意将这个文件 读入
+                }
+                else if(isAudioOrVideo(file.fileName())==2)
+                {
+                    Audio TempAudio(file.filePath().toLatin1().data());
+                    AudioVector.append(TempAudio);
+                    AddListItem(event->mimeData()->urls().at(i).toLocalFile());// 让程序 同意将这个文件 读入
+                }
+                else if(isAudioOrVideo(file.fileName())==3)
+                {
+                    if(!setLRC(file.filePath()))
+                    {
+                        LRCErrorFileName+=file.fileName();
+                        LRCErrorFileName+="\n";
+                        LRCErrorTag=1;
+                    }
+                }
+            }
+            else
+            {
+                RepeatedErrorFileName+=file.fileName();
+                RepeatedErrorFileName+="\n";
+                RepeatedErrorTag=1;
+            }
+        }
+        else//如果不是可以接受的文件类型，则报错
+        {
+            TypeErrorFileName+=file.fileName();
+            TypeErrorFileName+="\n";
+            TypeErrorTag=1;
+        }
+    }
+    if(TypeErrorTag==1)QMessageBox::critical(this, tr("错误"), tr("以下文件：\n\n%1\n类型非法,读入失败").arg(TypeErrorFileName));//如果出现了错误文件
+    if(RepeatedErrorTag==1)QMessageBox::critical(this, tr("错误"), tr("以下文件：\n\n%1\n文件名重复,读入失败").arg(RepeatedErrorFileName));//如果出现了错误文件
+    if(LRCErrorTag==1)QMessageBox::critical(this, tr("错误"), tr("以下歌词文件：\n\n%1\n无法找到对应音频").arg(LRCErrorFileName));//如果出现了错误文件
+    // 程序同意将文件加载，  下一步 读取文件
+    SaveLocalCache();
+}
+
+//列表项“双击”槽函数（播放音视频）
+void MainWindow::on_ListWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    if(CurrentAudioOrVedio!=-1)
+    {
+        SetCurrentListItemColor(QColor(255,255,255));
+    }
+    CurrentAudioOrVedio=ui->ListWidget->currentRow();
+    SetCurrentListItemColor(QColor(255,182,193));
+    /*根据类型播放视频*/
+    if(isAudioOrVideo(item->text())==1)
+    {
+        PlayAudioAndVedio(VideoVector[FindAudioOrVideoByName(item->text())].GetPath());
+    }
+    else if(isAudioOrVideo(item->text())==2)
+    {
+        PlayAudioAndVedio(AudioVector[FindAudioOrVideoByName(item->text())].GetPath());
+    }
+    PlayOrStopTag=1;
+    ui->PlayButton->setIcon(QIcon(":/images/Stop.png"));
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    // 如果是鼠标右键按下
+    if(event->button() == Qt::RightButton)
+    {
+        QMenu * ContextMenu = new QMenu;
+        ContextMenu->addAction(new QAction("音视频信息",this));
+        if(ui->ListWidget->currentItem())
+        {
+            QString filename=ui->ListWidget->currentItem()->text();
+            if(isAudioOrVideo(filename)==1)
+            {
+                QString Info_name="文件名：";
+                Info_name+=VideoVector[FindAudioOrVideoByName(filename)].name;
+                QString Info_bit_rate="比特率：";
+                Info_bit_rate+=VideoVector[FindAudioOrVideoByName(filename)].bit_rate;
+                QString Info_codec="编解码器：";
+                Info_codec+=VideoVector[FindAudioOrVideoByName(filename)].codec;
+
+                QString Info_frame_rate="帧率：";
+                Info_frame_rate+=VideoVector[FindAudioOrVideoByName(filename)].frame_rate;
+                QString Info_resolution="分辨率：";
+                Info_resolution+=VideoVector[FindAudioOrVideoByName(filename)].resolution;
+
+                ContextMenu->addAction(new QAction(Info_name,this));
+                ContextMenu->addAction(new QAction(Info_resolution,this));
+                ContextMenu->addAction(new QAction(Info_frame_rate,this));
+                ContextMenu->addAction(new QAction(Info_bit_rate,this));
+                ContextMenu->addAction(new QAction(Info_codec,this));
+            }
+            else if(isAudioOrVideo(filename)==2)
+            {
+                QString Info_name="文件名：";
+                Info_name+=AudioVector[FindAudioOrVideoByName(filename)].name;
+                QString Info_bit_rate="比特率：";
+                Info_bit_rate+=AudioVector[FindAudioOrVideoByName(filename)].bit_rate;
+                QString Info_codec="编解码器：";
+                Info_codec+=AudioVector[FindAudioOrVideoByName(filename)].codec;
+
+                QString Info_channel_count="频道数：";
+                Info_channel_count+=QString::number(AudioVector[FindAudioOrVideoByName(filename)].channel_count);
+                QString Info_album="专辑：";
+                Info_album+=AudioVector[FindAudioOrVideoByName(filename)].album;
+                QString Info_artist="艺术家：";
+                Info_artist+=AudioVector[FindAudioOrVideoByName(filename)].artist;
+
+                ContextMenu->addAction(new QAction(Info_name,this));
+                ContextMenu->addAction(new QAction(Info_artist,this));
+                ContextMenu->addAction(new QAction(Info_album,this));
+                ContextMenu->addAction(new QAction(Info_bit_rate,this));
+                ContextMenu->addAction(new QAction(Info_channel_count,this));
+                ContextMenu->addAction(new QAction(Info_codec,this));
+            }
+        }
+        ContextMenu->exec(event->globalPos());
+    }
+}
+
+//“键盘按下”事件
+void MainWindow::keyPressEvent(QKeyEvent *ev)
+{
+    if(ev->key() == Qt::Key_Delete)
+    {
+       QList<QListWidgetItem*> ListWidgetItemList=ui->ListWidget->selectedItems();
+
+       for(int i=0;i<ListWidgetItemList.size();i++)
+       {
+           if(ui->ListWidget->row(ListWidgetItemList[i])==CurrentAudioOrVedio&&PlayOrStopTag==1)//如果想要删除的是当前视频，且视频正在播放，提示错误并返回
+           {
+               QMessageBox::critical(NULL, "错误", tr("当前正在播放的音视频:\n%1\n无法从播放列表被删除！").arg(ListWidgetItemList[i]->text()), QMessageBox::Yes, QMessageBox::Yes);
+               continue;
+           }
+           else if(ui->ListWidget->row(ListWidgetItemList[i])==CurrentAudioOrVedio&&PlayOrStopTag==0)//如果想要删除的是当前视频且视频暂停，可以删除
+           {
+               player->stop();
+               delete player;
+               player=new QMediaPlayer;
+               CurrentAudioOrVedio=-1;
+           }
+           else if(ui->ListWidget->row(ListWidgetItemList[i])<CurrentAudioOrVedio)//如果要删除的是当前音视频之前的，那么指针-1
+           {
+               CurrentAudioOrVedio--;
+           }
+           else if(ui->ListWidget->row(ListWidgetItemList[i])>CurrentAudioOrVedio)//如果要删除的是当前音视频之后的，不进行操作
+           {
+
+           }
+           QListWidgetItem* j = ListWidgetItemList[i];
+           delete j;
+       }
+       SaveLocalCache();
+       return;
+    }
+    else if(ev->modifiers()==Qt::ControlModifier && ev->key()==Qt::Key_F)//全屏
+    {
+        //qDebug()<<"F";
+        on_FullScreenButton_clicked();
+    }
+    else if(ev->modifiers()==Qt::ControlModifier && ev->key()==Qt::Key_Left)//上一首
+    {
+        //qDebug()<<"left";
+        QString NextAudioOrVedio=getLastAudioOrVedio();
+        PlayAudioAndVedio(NextAudioOrVedio);
+    }
+    else if(ev->modifiers()==Qt::ControlModifier && ev->key()==Qt::Key_Right)//下一首
+    {
+        //qDebug()<<"right";
+        QString NextAudioOrVedio=getNextAudioOrVedio();
+        PlayAudioAndVedio(NextAudioOrVedio);
+    }
+    else if(ev->key()==Qt::Key_Escape)//退出全屏
+    {
+        if(this->isFullScreen()==1)
+        {
+            on_FullScreenButton_clicked();
+        }
+    }
+    else if(ev->key()==Qt::Key_Space)//开始|暂停
+    {
+        on_PlayButton_clicked();
+    }
+
+    QWidget::keyPressEvent(ev);
+}
+
+//“键盘松开”事件
+void MainWindow::keyReleaseEvent(QKeyEvent *ev)
+{
+    QWidget::keyReleaseEvent(ev);
+}
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------槽函数-----------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+//“播放按钮槽函数”
+void MainWindow::on_PlayButton_clicked()
+{
+    if(PlayOrStopTag==0)
+    {
+        PlayOrStopTag=1;
+        ui->PlayButton->setIcon(QIcon(":/images/Stop.png"));
+        player->play();
+    }
+    else if(PlayOrStopTag==1)
+    {
+        PlayOrStopTag=0;
+        ui->PlayButton->setIcon(QIcon(":/images/Play.png"));
+        player->pause();
+    }
+}
+
+//“全屏”按钮槽函数
+void MainWindow::on_FullScreenButton_clicked()
+{
+    if(this->isFullScreen()==0)//如果当前不是全屏
+    {
+        ui->FunctionWidget->setVisible(0);//功能栏隐藏
+        this->setWindowFlags(Qt::FramelessWindowHint);//最小化、窗口化、退出按钮隐藏
+        ui->PlayListWidget->setVisible(0);//将播放列表设置为不可见
+        this->showFullScreen();//当前窗口全屏
+        ui->FullScreenButton->setIcon(QIcon(":/images/SmallScreen.png"));//改变全屏按钮的图表
+        ui->centralwidget->layout()->setContentsMargins(0,0,0,0);//将边框设置为0
+        ui->VideoScreenLabel->setFrameShape(QFrame::Shape(QFrame::NoFrame));//将播放标签设置为无边框
+        this->setCursor(Qt::BlankCursor); //隐藏鼠标
+    }
+    else//如果当前是全屏
+    {
+        ui->FunctionWidget->setVisible(1);//功能栏出现
+        FunctionWidgetTimer->stop();//计时器停止即使，避免功能栏被隐藏
+        this->setWindowFlags(Qt::Window);//最小化、窗口化、退出按钮出现
+        this->showNormal();//恢复正常尺寸
+        ui->FullScreenButton->setIcon(QIcon(":/images/FullScreen.png"));//改变全屏按钮的图表
+        ui->centralwidget->layout()->setContentsMargins(11,11,11,11);//将边框设置为11
+        ui->VideoScreenLabel->setFrameShape(QFrame::Shape(QFrame::WinPanel));//将播放标签设置为有边框
+        this->resize(847,580);//设置为原大小
+        //使得屏幕居中显示
+        QScreen *screen = QGuiApplication::primaryScreen ();
+        QRect screenRect =  screen->availableVirtualGeometry();
+        this->move((screenRect.width() - this->width())/ 2, (screenRect.height() - this->height()) /2);
+        this->setCursor(Qt::ArrowCursor); //显示鼠标
+    }
+}
+
+//计时器槽函数
+void MainWindow::on_timer_timeout()//计时器时间到
+{
+    ui->FunctionWidget->setVisible(0);//隐藏功能栏
+    ui->PlayListWidget->setVisible(0);//隐藏播放列表
+    FunctionWidgetTimer->stop();//停止计时
+    this->setCursor(Qt::BlankCursor); //隐藏鼠标
+}
+
+//显示播放列表按钮槽函数
+void MainWindow::on_PlayListButton_clicked()
+{
+    if(ui->PlayListWidget->isVisible()==0)
+    {
+        ui->PlayListWidget->setVisible(1);
+    }
+    else
+    {
+        ui->PlayListWidget->setVisible(0);
+    }
+}
+
+
+//“播放”按钮槽函数
+void MainWindow::on_ModeButton_clicked()
+{
+    if(PlaySeqence==1)
+    {
+        PlaySeqence++;
+        ui->ModeButton->setText("顺序播放");
+        ui->ModeButton->setIcon(QIcon(":/images/PlayInOrder.png"));
+        ui->ModeButton->setIconSize(QSize(17,16));
+    }
+    else if(PlaySeqence==2)
+    {
+        PlaySeqence++;
+        ui->ModeButton->setText("随机播放");
+        ui->ModeButton->setIcon(QIcon(":/images\\PlayRandom.png"));
+        ui->ModeButton->setIconSize(QSize(17,16));
+    }
+    else if(PlaySeqence==3)
+    {
+        PlaySeqence++;
+        ui->ModeButton->setText("单曲循环");
+        ui->ModeButton->setIcon(QIcon(":/images\\PlaySingleCycle.png"));
+        ui->ModeButton->setIconSize(QSize(17,16));
+    }
+    else
+    {
+        PlaySeqence=1;
+        ui->ModeButton->setText("单曲播放");
+        ui->ModeButton->setIcon(QIcon(":/images\\PlaySingle.png"));
+        ui->ModeButton->setIconSize(QSize(17,16));
+    }
+}
+
+//“下一个”按钮槽函数
+void MainWindow::on_NextVedioButton_clicked()
+{
+    QString NextAudioOrVedio=getNextAudioOrVedio();
+    PlayAudioAndVedio(NextAudioOrVedio);
+}
+
+//"上一个"按钮槽函数
+void MainWindow::on_LastVedioButton_clicked()
+{
+    QString NextAudioOrVedio=getLastAudioOrVedio();
+    PlayAudioAndVedio(NextAudioOrVedio);
+}
+
+void MainWindow::SetCurrentListItemColor(QColor q)
+{
+    ui->ListWidget->item(CurrentAudioOrVedio)->setBackground(q);
+}
+
+//“添加文件”按钮槽函数
+void MainWindow::on_AddButton_clicked()
+{
+    QString CurPath=QDir::currentPath();//将选择的路径先设置为当前文件夹
+    QString Title="选择音视频文件";//标题
+    QString Filter="所有文件(*.*);;视频文件(*.avi *.wmv *.mp4);;音频文件(*.mp3 *.flac);;歌词文件(*.lrc);;";//文件过滤器
+    QStringList fileList= QFileDialog::getOpenFileNames(this,Title,CurPath,Filter);
+    QString RepeatedErrorFileName="";
+    QString LRCErrorFileName="";
+    int isRepeatedError=0;
+    int isLRCError=0;
+    for(int i=0;i<fileList.count();i++)
+    {
+        if(isFileNameRepeated(QFileInfo(fileList[i]).fileName()))//如果文件名重复了
+        {
+            isRepeatedError=1;
+            RepeatedErrorFileName+=QFileInfo(fileList[i]).fileName();
+            RepeatedErrorFileName+="\n";
+        }
+        else//如果没有重复
+        {
+            if(isAudioOrVideo(QFileInfo(fileList[i]).fileName())==3)//如果是歌词文件
+            {
+                if(setLRC(QFileInfo(fileList[i]).filePath()))
+                {
+                    //setListWidgetLRC(QFileInfo(fileList[i]).fileName());
+                }
+                else
+                {
+                    isLRCError=1;
+                    LRCErrorFileName+=QFileInfo(fileList[i]).fileName();
+                    LRCErrorFileName+="\n";
+                }
+            }
+            else
+            {
+                AddListItem(fileList[i]);//在播放列表显示
+                AddAudioOrVideo(fileList[i]);//载入数组
+            }
+        }
+    }
+    if(isRepeatedError==1)QMessageBox::critical(this, tr("错误"), tr("以下文件：\n\n%1\n文件名重复,读入失败").arg(RepeatedErrorFileName));//如果出现了错误文件
+    if(isLRCError==1)QMessageBox::critical(this, tr("错误"), tr("以下歌词文件：\n\n%1\n未找到对应音频,读入失败").arg(LRCErrorFileName));//如果出现了错误文件
+    SaveLocalCache();
+}
+
+void MainWindow::getduration(qint64 playtime)
+{
+    if(!m_sliderstate)
+    {
+        playtime = player->duration();
+        setget_Alltime(playtime);
+    }
+}
+
+void MainWindow::getposition(qint64 playtime)
+{
+    if(!m_sliderstate)
+    {
+        playtime = player->position();
+        setget_currenttime(playtime);
+    }
+}
+
+void MainWindow::UpdateCurrentAudioOrVedio()
+{
+    for(int i=0;i<ui->ListWidget->count();i++)
+    {
+        if(ui->ListWidget->item(i)->background()==QBrush(QColor(255,182,193)))
+        {
+            CurrentAudioOrVedio=i;
+            break;
+        }
+    }
+    qDebug()<<CurrentAudioOrVedio;
+    SaveLocalCache();
+}
+
+
+void MainWindow::on_VoiceButton_clicked()
+{
+    Volumew.setWindowFlags(Qt::FramelessWindowHint|Qt::Tool);
+    //sw.setWindowFlags(sw.windowFlags() | Qt::WindowStaysOnTopHint);
+    //Volumew.move(this->pos()+ui->FunctionWidget->pos()+ui->ButtonWidget->pos()+ui->ModeWidget->pos()+ui->VoiceButton->pos());
+    //Volumew.move(this->pos()+ui->centralwidget->pos()+ui->MainWidget->pos()+ui->FunctionWidget->pos()+ui->ButtonWidget->pos()+ui->ModeWidget->pos()+ui->VoiceButton->pos());
+    Volumew.move(this->geometry().x()+ui->centralwidget->geometry().x()+ui->MainWidget->geometry().x()+ui->FunctionWidget->geometry().x()+ui->ButtonWidget->geometry().x()+ui->ModeWidget->geometry().x()+ui->VoiceButton->geometry().x()-3,this->geometry().y()+ui->centralwidget->geometry().y()+ui->MainWidget->geometry().y()+ui->FunctionWidget->geometry().y()+ui->ButtonWidget->geometry().y()+ui->ModeWidget->geometry().y()+ui->VoiceButton->geometry().y()-95);
+    Volumew.show();
+}
+
+void MainWindow::on_SetButton_clicked()
+{
+    sw.setWindowFlags(Qt::FramelessWindowHint|Qt::Tool);
+    //sw.setWindowFlags(sw.windowFlags() | Qt::WindowStaysOnTopHint);
+    sw.move(this->geometry().x()+ui->centralwidget->geometry().x()+ui->MainWidget->geometry().x()+ui->FunctionWidget->geometry().x()+ui->ButtonWidget->geometry().x()+ui->ModeWidget->geometry().x()+ui->SetButton->geometry().x()-2,this->geometry().y()+ui->centralwidget->geometry().y()+ui->MainWidget->geometry().y()+ui->FunctionWidget->geometry().y()+ui->ButtonWidget->geometry().y()+ui->ModeWidget->geometry().y()+ui->SetButton->geometry().y()-67);
+    sw.show();
+}
+void MainWindow::SetVolumeValue(int value)
+{
+    //qDebug()<<"set";
+    audioOutput->setVolume(float(value)/100);
+    if(value==0)
+    {
+        ui->VoiceButton->setIcon(QIcon(":/images/Mute.png"));
+    }
+    else
+    {
+        ui->VoiceButton->setIcon(QIcon(":/images/Voice.png"));
+    }
+}
