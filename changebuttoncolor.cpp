@@ -23,3 +23,8 @@ void ChangeButtonColor::leaveEvent(QEvent * e)
     this->setStyleSheet("QToolButton{background:rgba(128, 128, 128,0);}");
     //qDebug()<<"鼠标移出";
 }
+
+//void ChangeButtonColor::mouseMoveEvent(QMouseEvent * event)
+//{
+//    qDebug()<<"鼠标移动";
+//}

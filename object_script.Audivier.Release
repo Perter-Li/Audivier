@@ -1,4 +1,5 @@
 release/changebuttoncolor.o
+release/getframe.o
 release/main.o
 release/mainwindow.o
 release/media.o
@@ -8,6 +9,7 @@ release/setvolume.o
 release/setwindow.o
 release/qrc_images.o
 release/moc_changebuttoncolor.o
+release/moc_getframe.o
 release/moc_mainwindow.o
 release/moc_mylistwidget.o
 release/moc_playerslider.o

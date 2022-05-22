@@ -13,6 +13,7 @@ public:
 protected:
     void enterEvent(QEnterEvent * e);
     void leaveEvent(QEvent *);
+//    void mouseMoveEvent(QMouseEvent * event);
 signals:
 
 };

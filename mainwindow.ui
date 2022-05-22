@@ -342,6 +342,9 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <property name="leftMargin">
               <number>5</number>
@@ -361,6 +364,9 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
              </item>
              <item>
               <widget class="PlayerSlider" name="ProgressSlider">
+               <property name="mouseTracking">
+                <bool>true</bool>
+               </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>

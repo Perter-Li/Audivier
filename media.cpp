@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "windows.h"
 
 MediaTime::MediaTime(qint64 play_time) //play_time单位为秒
 {
@@ -250,12 +251,42 @@ Audio::Audio(const char* path):Media(path)
     }
     this->name=QFileInfo(path).fileName();
     this->lyricpath="";
+
+    if (_access("wave_form_imgs",0) == -1)
+    {
+        qDebug() << "The file/dir doesn't exisit";
+    }
+    else
+    {
+        qDebug() << "Exisit ";
+        _mkdir("wave_form_imgs");
+    }
+//    std::string ffmpeg_exe_path = "./";
+//    std::string output_path = "wave_form_imgs\\" + this->name.toStdString() + ".png";
+//    qint64 audio_length = this->duration.getSec();
+//    std::string waveform_img_width = QString::number(audio_length * 10).toStdString();  // 音频长度为72秒，则波形图宽度为720p
+//    std::string waveform_img_height = "100";  // 建议直接设置成 ui->label_waveform的高度
+//    std::string cmd = ffmpeg_exe_path + " -i " + this->path.toStdString() + " -filter_complex \"showwavespic=s=" + waveform_img_width + "x" + waveform_img_height + ":colors=0xff0000\" -frames:v 1 " + output_path;
+//    qDebug() << QString::fromStdString(cmd);
+//    WinExec(cmd.c_str(), SW_HIDE);
+//    while(1)  //检查波形图是否已经生成
+//    {
+//        if(_access(output_path.c_str(), 0) == -1);
+//        else
+//            break;
+//    }
 }
 
 QImage Audio::getCover()
 {
     return this->cover;
 }
+
+qint64 MediaTime::getSec()
+{
+    return this->hrs * 3600 + this->min * 60 + this->sec;
+}
+
 
 QString Audio::getInfo()
 {
@@ -277,6 +308,12 @@ QString Audio::getInfo()
     qDebug() << QString("Channels: %1").arg(this->channel_count);
     qDebug() << "Duration: " + this->duration.getTime();
     return output;
+}
+
+QImage Audio::getWaveform()
+{
+    qDebug() << QString::fromStdString("wave_form_imgs\\" + this->name.toStdString() + ".png");
+    return QImage(QString::fromStdString("wave_form_imgs\\" + this->name.toStdString() + ".png"));
 }
 
 Lyric::Lyric(double time,QString text)

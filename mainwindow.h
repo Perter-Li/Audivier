@@ -23,11 +23,18 @@
 #include <mylistwidget.h>
 #include <setwindow.h>
 #include <setvolume.h>
-#include <setvolume.h>
+#include <getframe.h>
 #include <QTime>
 #include <QVector>
 #include <QRegExp>
 #include <QMouseEvent>
+#include <ui_getframe.h>
+#include <ui_setvolume.h>
+#include <cstdlib>
+#include <stdio.h>
+#include <io.h>
+#include <direct.h>
+
 
 extern "C"{
 #include <libavcodec/avcodec.h>
@@ -64,18 +71,17 @@ struct AudioInfoGuard {
 class MediaTime
 {
 public:
-    MediaTime():sec((qint64(0))),
-        min((qint64(0))),
-        hrs((qint64(0))){};
+    MediaTime():sec((qint64(0))),min((qint64(0))),hrs((qint64(0))){};
     MediaTime(qint64 play_time);
     ~MediaTime(){};
     QString getTime();
     void setTime(qint64 play_time);
+    qint64 getSec();
 
 private:
-    qint64 sec;
-    qint64 min;
-    qint64 hrs;
+    qint64 sec=0;
+    qint64 min=0;
+    qint64 hrs=0;
 };
 
 
@@ -123,6 +129,8 @@ public:
     QString artist;
     QImage cover;
     QString lyricpath;
+    QImage getWaveform();
+
 };
 
 class Lyric
@@ -195,6 +203,9 @@ private slots:
 
     void on_SetButton_clicked();
     void SetVolumeValue(int value);
+    void SetFrameValue(int frame);
+    void ShowFrame(double value);
+    void CloseFrame();
 
 private:
     QTimer* FunctionWidgetTimer;
@@ -207,6 +218,8 @@ private:
     int CurrentAudioOrVedio = -1;
     int NextSongTag = 0;
     int NowPlayType = 0;//1表示视频，2表示音频
+    int frame=1;//表示快进或者后退的帧数
+    int ShowFrameCount=0;//计数器，使得鼠标移动的触发没有那么频繁
 
     /*变量*/
     QMediaPlayer *player =new QMediaPlayer;  //用于解析视频流的媒体播放器
@@ -221,6 +234,8 @@ private:
     int m_slider_crtval;                    //滑块当前值
     SetWindow sw;//设置窗口
     SetVolume Volumew;
+    GetFrame gf;
+
 
     /*数组*/
     QVector<Video> VideoVector;

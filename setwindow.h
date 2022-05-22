@@ -20,8 +20,14 @@ private slots:
 
     void on_toolButton_3_clicked();
 
+    void on_toolButton_2_clicked();
+
 private:
     Ui::SetWindow *ui;
+    int frame=1;
+
+signals:
+    void FrameSignal(int);
 };
 
 #endif // SETWINDOW_H

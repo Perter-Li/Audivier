@@ -13,15 +13,15 @@ class SetVolume : public QWidget
 
 public:
     explicit SetVolume(QWidget *parent = nullptr);
+
     ~SetVolume();
+    Ui::SetVolume *ui;
 
 private slots:
     void on_toolButton_clicked();
 
     void on_verticalSlider_valueChanged(int value);
 
-private:
-    Ui::SetVolume *ui;
 
 signals:
     void VolumeSignal(int);

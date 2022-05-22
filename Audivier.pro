@@ -13,6 +13,7 @@ CONFIG += c++17
 
 SOURCES += \
     changebuttoncolor.cpp \
+    getframe.cpp \
     main.cpp \
     mainwindow.cpp \
     media.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     changebuttoncolor.h \
+    getframe.h \
     mainwindow.h \
     mylistwidget.h \
     playerslider.h \
@@ -30,6 +32,7 @@ HEADERS += \
     setwindow.h
 
 FORMS += \
+    getframe.ui \
     mainwindow.ui \
     setvolume.ui \
     setwindow.ui

@@ -24,3 +24,18 @@ void SetWindow::on_toolButton_3_clicked()
     this->close();
 }
 
+
+void SetWindow::on_toolButton_2_clicked()
+{
+    if(this->frame==1)
+    {
+        this->frame=5;
+        ui->toolButton_2->setIcon(QIcon(":/images/FiveFrame.png"));
+    }
+    else if(this->frame==5)
+    {
+        this->frame=1;
+        ui->toolButton_2->setIcon(QIcon(":/images/OneFrame.png"));
+    }
+    emit FrameSignal(this->frame);
+}

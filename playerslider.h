@@ -13,9 +13,14 @@ public:
 protected:
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);
+    void mouseMoveEvent(QMouseEvent *ev);
+    void leaveEvent(QEvent * e);
 signals:
     void mousepress(int value);
     void mouserelease(int value);
+    void SliderMouseMove(double value);
+    void SliderMouseLeave();
+
 public slots:
 };
 
