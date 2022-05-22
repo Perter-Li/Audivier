@@ -9,7 +9,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -37,7 +37,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -55,7 +57,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -79,10 +81,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\changebuttoncolor.cpp"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\changebuttoncolor.cpp"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/changebuttoncolor.cpp"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/changebuttoncolor.cpp"
 },
 {
     "arguments": [
@@ -94,7 +96,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -122,7 +124,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -140,7 +144,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -164,10 +168,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\main.cpp"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\main.cpp"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/main.cpp"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/main.cpp"
 },
 {
     "arguments": [
@@ -179,7 +183,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -207,7 +211,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -225,7 +231,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -249,10 +255,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\mainwindow.cpp"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\mainwindow.cpp"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/mainwindow.cpp"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/mainwindow.cpp"
 },
 {
     "arguments": [
@@ -264,7 +270,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -292,7 +298,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -310,7 +318,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -334,10 +342,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\media.cpp"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\media.cpp"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/media.cpp"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/media.cpp"
 },
 {
     "arguments": [
@@ -349,7 +357,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -377,7 +385,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -395,7 +405,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -419,10 +429,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\mylistwidget.cpp"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\mylistwidget.cpp"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/mylistwidget.cpp"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/mylistwidget.cpp"
 },
 {
     "arguments": [
@@ -434,7 +444,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -462,7 +472,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -480,7 +492,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -504,10 +516,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\playerslider.cpp"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\playerslider.cpp"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/playerslider.cpp"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/playerslider.cpp"
 },
 {
     "arguments": [
@@ -519,7 +531,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -547,7 +559,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -565,7 +579,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -589,10 +603,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\setvolume.cpp"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\setvolume.cpp"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/setvolume.cpp"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/setvolume.cpp"
 },
 {
     "arguments": [
@@ -604,7 +618,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -632,7 +646,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -650,7 +666,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -674,10 +690,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\setwindow.cpp"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\setwindow.cpp"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/setwindow.cpp"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/setwindow.cpp"
 },
 {
     "arguments": [
@@ -689,7 +705,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -717,7 +733,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -735,7 +753,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -759,10 +777,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\changebuttoncolor.h"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\changebuttoncolor.h"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/changebuttoncolor.h"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/changebuttoncolor.h"
 },
 {
     "arguments": [
@@ -774,7 +792,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -802,7 +820,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -820,7 +840,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -844,10 +864,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\mainwindow.h"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\mainwindow.h"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/mainwindow.h"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/mainwindow.h"
 },
 {
     "arguments": [
@@ -859,7 +879,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -887,7 +907,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -905,7 +927,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -929,10 +951,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\mylistwidget.h"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\mylistwidget.h"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/mylistwidget.h"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/mylistwidget.h"
 },
 {
     "arguments": [
@@ -944,7 +966,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -972,7 +994,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -990,7 +1014,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -1014,10 +1038,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\playerslider.h"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\playerslider.h"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/playerslider.h"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/playerslider.h"
 },
 {
     "arguments": [
@@ -1029,7 +1053,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -1057,7 +1081,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -1075,7 +1101,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -1099,10 +1125,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\setvolume.h"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\setvolume.h"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/setvolume.h"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/setvolume.h"
 },
 {
     "arguments": [
@@ -1114,7 +1140,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -1142,7 +1168,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -1160,7 +1188,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -1184,10 +1212,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\setwindow.h"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\setwindow.h"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/setwindow.h"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/setwindow.h"
 },
 {
     "arguments": [
@@ -1199,7 +1227,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -1227,7 +1255,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -1245,7 +1275,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -1269,10 +1299,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\ui_mainwindow.h"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ui_setvolume.h"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/ui_mainwindow.h"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/ui_setvolume.h"
 },
 {
     "arguments": [
@@ -1284,7 +1314,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -1312,7 +1342,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -1330,7 +1362,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -1354,10 +1386,10 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\ui_setwindow.h"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ui_mainwindow.h"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/ui_setwindow.h"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/ui_mainwindow.h"
 },
 {
     "arguments": [
@@ -1369,7 +1401,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\Tools\\QtCreator\\share\\qtcreator\\cplusplus\\wrappedQtHeaders\\QtCore",
         "-I",
-        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-sFccYD\\clang-uiheader-nEuWvr",
+        "C:\\Users\\李稳强\\AppData\\Local\\Temp\\QtCreator-xqEscH\\clang-uiheader-FtxXil",
         "-nostdinc",
         "-nostdinc++",
         "-g",
@@ -1397,7 +1429,9 @@
         "-DQT_CORE_LIB",
         "-DQT_NEEDS_QMAIN",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier",
+        "-I",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ffmpeg\\include",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include",
         "-I",
@@ -1415,7 +1449,7 @@
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\include\\QtCore",
         "-I",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\debug",
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\debug",
         "-I",
         "E:\\MySoftware\\Application\\QT\\QT6_2\\6.2.2\\mingw_64\\mkspecs\\win32-g++",
         "-isystem",
@@ -1439,9 +1473,9 @@
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
         "-fno-delayed-template-parsing",
-        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Chen\\ui_setvolume.h"
+        "E:\\Program\\QT\\QT6_2\\FFmpeg\\Audivier\\Audivier\\ui_setwindow.h"
     ],
-    "directory": "E:/Program/QT/QT6_2/FFmpeg/Chen/.qtc_clangd",
-    "file": "E:/Program/QT/QT6_2/FFmpeg/Chen/ui_setvolume.h"
+    "directory": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/.qtc_clangd",
+    "file": "E:/Program/QT/QT6_2/FFmpeg/Audivier/Audivier/ui_setwindow.h"
 }
 ]
