@@ -37,3 +37,14 @@ void PlayerSlider::mouseReleaseEvent(QMouseEvent *ev)
     emit mouserelease(value);
     QSlider::mouseReleaseEvent(ev);
 }
+
+void PlayerSlider::mouseMoveEvent(QMouseEvent *ev)
+{
+    double value=float(ev->pos().x())/float(this->size().width());
+    emit SliderMouseMove(value);
+}
+
+void PlayerSlider::leaveEvent(QEvent * e)
+{
+    emit SliderMouseLeave();
+}
