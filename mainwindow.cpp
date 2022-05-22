@@ -52,6 +52,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->ListWidget,SIGNAL(ItemDragSignal()),this,SLOT(UpdateCurrentAudioOrVedio()));
     connect(&Volumew,SIGNAL(VolumeSignal(int)),this,SLOT(SetVolumeValue(int)));
+    connect(&sw,SIGNAL(FrameSignal(int)),this,SLOT(SetFrameValue(int)));
+    connect(ui->ProgressSlider,SIGNAL(SliderMouseMove(double)),this,SLOT(ShowFrame(double)));
+    connect(ui->ProgressSlider,SIGNAL(SliderMouseLeave()),this,SLOT(CloseFrame()));
 
     //子窗口
 
@@ -476,6 +479,7 @@ void MainWindow::AddListItem(QString FileAdd)
     QFileInfo file(FileAdd);
     //QString AbsPath=file.absoluteFilePath();//获取绝对路径
     QString FileName=file.fileName();//获取文件名
+    qDebug()<<FileName;
     //QString temp=FileName+"\t"+AbsPath;
     QString temp=FileName;
     QListWidgetItem* item=new QListWidgetItem(temp);
@@ -750,7 +754,7 @@ void MainWindow::dropEvent(QDropEvent *event)
     QString RepeatedErrorFileName="";
     QString LRCErrorFileName="";
     QStringList acceptedFileTypes;
-    acceptedFileTypes<<"mp4"<<"avi"<<"wmv"<<"mp3"<<"flac"<<"lrc";
+    acceptedFileTypes<<"mp4"<<"avi"<<"wmv"<<"mp3"<<"flac"<<"lrc"<<"flv";
     for(int i=0;i<event->mimeData()->urls().count();i++)
     {
         // 取到拖拽文件转换成文件
@@ -923,6 +927,7 @@ void MainWindow::keyPressEvent(QKeyEvent *ev)
         //qDebug()<<"F";
         on_FullScreenButton_clicked();
     }
+
     else if(ev->modifiers()==Qt::ControlModifier && ev->key()==Qt::Key_Left)//上一首
     {
         //qDebug()<<"left";
@@ -935,6 +940,49 @@ void MainWindow::keyPressEvent(QKeyEvent *ev)
         QString NextAudioOrVedio=getNextAudioOrVedio();
         PlayAudioAndVedio(NextAudioOrVedio);
     }
+    else if(ev->modifiers()==Qt::ControlModifier && ev->key()==Qt::Key_I)//打开文件导入窗口
+    {
+        on_AddButton_clicked();
+    }
+    else if(ev->modifiers()==Qt::ControlModifier && ev->key()==Qt::Key_Down)//调节音量
+    {
+//        on_VoiceButton_clicked();
+//        this->Volumew.ui->verticalSlider->setFocus();
+//        int value=this->Volumew.ui->verticalSlider->value()*100;
+//        value=value-1;
+//        this->Volumew.ui->verticalSlider->setValue(double(value)/100);
+//        SetVolumeValue(value);
+    }
+    else if(ev->key()==Qt::Key_Left)//逐帧后退
+    {
+        if(CurrentAudioOrVedio==-1)return;//必须要先选中视频
+        if(NowPlayType==2)return;//当前播放的必须是视频
+
+        /*暂停*/
+        PlayOrStopTag=0;
+        ui->PlayButton->setIcon(QIcon(":/images/Play.png"));
+        player->pause();
+
+        int TempFrameRate=VideoVector[FindAudioOrVideoByName(ui->ListWidget->item(CurrentAudioOrVedio)->text())].frame_rate.split("f")[0].toInt();
+        qint64 move = (qint64)(this->player->position() - double(frame)*1000/TempFrameRate);
+        if(move<0)move=0;//避免上溢
+        player->setPosition(move);
+    }
+    else if(ev->key()==Qt::Key_Right)//逐帧快进
+    {
+        if(CurrentAudioOrVedio==-1)return;//必须要先选中视频
+        if(NowPlayType==2)return;//当前播放的必须是视频
+
+        /*暂停*/
+        PlayOrStopTag=0;
+        ui->PlayButton->setIcon(QIcon(":/images/Play.png"));
+        player->pause();
+
+        int TempFrameRate=VideoVector[FindAudioOrVideoByName(ui->ListWidget->item(CurrentAudioOrVedio)->text())].frame_rate.split("f")[0].toInt();
+        qint64 move = (qint64)(this->player->position() + double(frame)*1000/TempFrameRate);
+        if(move>this->player->duration())move=this->player->duration();//避免上溢
+        player->setPosition(move);
+    }
     else if(ev->key()==Qt::Key_Escape)//退出全屏
     {
         if(this->isFullScreen()==1)
@@ -946,6 +994,7 @@ void MainWindow::keyPressEvent(QKeyEvent *ev)
     {
         on_PlayButton_clicked();
     }
+
 
     QWidget::keyPressEvent(ev);
 }
@@ -1194,3 +1243,175 @@ void MainWindow::SetVolumeValue(int value)
         ui->VoiceButton->setIcon(QIcon(":/images/Voice.png"));
     }
 }
+
+void MainWindow::SetFrameValue(int frame)
+{
+    this->frame=frame;
+}
+
+void MainWindow::ShowFrame(double value)
+{
+    if(NowPlayType!=1)return;//如果是音频，不显示
+
+    ShowFrameCount++;
+    if(ShowFrameCount<=5)
+    {
+        return;
+    }
+    else
+    {
+        ShowFrameCount=0;
+    }
+
+    /*窗口设置*/
+    gf.setWindowFlags(Qt::FramelessWindowHint|Qt::Tool);
+    gf.move(this->geometry().x()+ui->centralwidget->geometry().x()+ui->MainWidget->geometry().x()+ui->FunctionWidget->geometry().x()+ui->ProcessWidget->geometry().x()+ui->ProgressSlider->geometry().x()+ui->ProgressSlider->size().width()*value,this->geometry().y()+ui->centralwidget->geometry().y()+ui->MainWidget->geometry().y()+ui->FunctionWidget->geometry().y()+ui->ProcessWidget->geometry().y()+ui->ProgressSlider->geometry().y()-ui->ProgressSlider->size().height()-gf.size().height());
+
+    /*提取具体帧*/
+    Video tempv=VideoVector[FindAudioOrVideoByName(ui->ListWidget->item(CurrentAudioOrVedio)->text())];
+    QString file=tempv.GetPath().toLatin1();
+    //const char* file_path = tempv.GetPath().toLatin1();
+
+    int l=file.length();
+    char* file_path;
+    file_path=new char[l];
+    for(int i=0;i<l;i++)
+    {
+        file_path[i]=file[i].toLatin1();
+    }
+    file_path[l]='\0';
+
+    //qDebug()<<file_path;
+
+    int ret = -1, index = 0, image_size = -1;
+    int videoStream = -1, got_picture = -1, numBytes= -1;
+    uint8_t *out_buffer = NULL;
+
+    AVFormatContext *pFormatCtx = NULL;
+    AVCodecContext *pCodecCtx = NULL;
+    AVCodec *pCodec = NULL;
+    AVPacket *packet = NULL;
+    AVFrame *pFrame = NULL, *pFrameRGB = NULL;
+    struct SwsContext *img_convert_ctx = NULL;
+
+    av_register_all();
+    pFormatCtx = avformat_alloc_context();
+    if(NULL == pFormatCtx){
+        qDebug() << "avformat_alloc_context() failed.";
+    }
+
+    // 1. 打开视频文件;
+    ret = avformat_open_input(&pFormatCtx, file_path, NULL, NULL);
+    if(ret < 0){
+        qDebug() << "avformat_open_input() failed.";
+    }
+
+    // 2. 读取视频文件信息;
+    ret = avformat_find_stream_info(pFormatCtx, NULL);
+    if (ret < 0) {
+        qDebug() << "avformat_find_stream_info() failed.";
+    }
+
+    // 3. 获取视频流
+    for (int i = 0; i < pFormatCtx->nb_streams; i++) {
+        if (pFormatCtx->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO) {
+            videoStream = i;
+        }
+    }
+    if (videoStream == -1) {
+        qDebug() << "coun't find a video stream.";
+    }
+
+    // 4. 根据上面得到的视频流类型打开对应的解码器
+    pCodecCtx = pFormatCtx->streams[videoStream]->codec;
+    pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
+    if (pCodec == NULL) {
+        qDebug() <<"Decoder not found.";
+    }
+    if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
+        qDebug() <<"Ddecoder couldn't open.";
+    }
+
+    // 5. 分配并初始化一个视频packet
+    image_size = pCodecCtx->width * pCodecCtx->height;
+    packet = (AVPacket *) malloc(sizeof(AVPacket)); //分配一个packet
+    if(!packet){
+        qDebug() <<"malloc() failed.";
+    }
+    ret = av_new_packet(packet, image_size);
+    if(ret < 0){
+        qDebug() <<"av_new_packet() failed.";
+    }
+
+    // 6. 分配两个frame分别存放yuv和rgb数据
+    pFrame = av_frame_alloc();
+    pFrameRGB = av_frame_alloc();
+    if(!pFrame || !pFrameRGB){
+        qDebug() <<"pFrame:" << pFrame
+               <<", pFrameRGB:" << pFrameRGB
+              <<" av_frame_alloc() failed";
+    }
+
+    // 7. 分配一个struct SwsContext结构体, 填充源图像和目标图像信息(为接下来的转换做准备)
+    img_convert_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height,
+                pCodecCtx->pix_fmt, pCodecCtx->width, pCodecCtx->height,
+                AV_PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
+
+    // 8. pFrameRGB和out_buffer都是已经申请到的一段内存, 会将pFrameRGB的数据按RGB24格式自动"关联(转换并放置)"到out_buffer。
+    numBytes = avpicture_get_size(AV_PIX_FMT_RGB24, pCodecCtx->width,pCodecCtx->height);
+    out_buffer = (uint8_t *) av_malloc(numBytes * sizeof(uint8_t));
+    ret = avpicture_fill((AVPicture *) pFrameRGB, out_buffer, AV_PIX_FMT_RGB24,
+                pCodecCtx->width, pCodecCtx->height);
+    if (!img_convert_ctx || numBytes<0 || !out_buffer || ret<0) {
+        qDebug() <<"img_convert_ctx:" << img_convert_ctx
+               <<", numBytes:" << numBytes
+              <<", out_buffer:" << out_buffer
+             <<", ret:" <<ret;
+    }
+
+    // 9. 按时间寻找需要的帧
+    ret = av_seek_frame(pFormatCtx, -1, int(player->duration()*value/1000) * AV_TIME_BASE, AVSEEK_FLAG_BACKWARD); // this->preview_frame_time，单位为s，即为预览图所在时间点
+
+    while(1){
+        if (av_read_frame(pFormatCtx, packet) < 0) {
+            break;
+        }
+
+        if (packet->stream_index == videoStream) {
+            ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture,packet);
+            if (ret < 0) {
+                qDebug() << "decode error.";
+            }
+        }
+
+        if (got_picture) {
+            if(pFrame->key_frame == 1)  // 提取关键帧
+            {
+                sws_scale(img_convert_ctx,
+                        (uint8_t const * const *) pFrame->data,
+                        pFrame->linesize, 0, pCodecCtx->height, pFrameRGB->data,
+                        pFrameRGB->linesize);
+
+                // 将提取的关键帧显示到label_preview上
+                QImage image(pFrameRGB->data[0], pCodecCtx->width, pCodecCtx->height, pFrameRGB->linesize[0], QImage::Format_RGB888);
+                gf.ui->label->setPixmap(QPixmap::fromImage(image));
+                gf.ui->label->setScaledContents(1);
+
+            }
+        }
+
+        index++;
+        if(index > 100){
+            break;
+        }
+    }
+
+    gf.show();
+}
+
+void MainWindow::CloseFrame()
+{
+    if(NowPlayType==2)return;
+    gf.close();
+}
+
