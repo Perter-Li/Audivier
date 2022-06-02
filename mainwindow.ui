@@ -10,6 +10,24 @@
     <height>580</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>847</width>
+    <height>580</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>847</width>
+    <height>580</height>
+   </size>
+  </property>
   <property name="mouseTracking">
    <bool>true</bool>
   </property>
@@ -18,6 +36,10 @@
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/images/logo.jpg</normaloff>:/images/logo.jpg</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -103,13 +125,16 @@
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>11</number>
+              <number>0</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>11</number>
+              <number>0</number>
+             </property>
+             <property name="spacing">
+              <number>0</number>
              </property>
              <item row="0" column="3">
               <spacer name="verticalSpacer">
@@ -122,79 +147,10 @@
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>60</height>
+                 <height>40</height>
                 </size>
                </property>
               </spacer>
-             </item>
-             <item row="3" column="3">
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>60</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="3">
-              <widget class="QWidget" name="widget" native="true">
-               <layout class="QVBoxLayout" name="verticalLayout_6">
-                <item>
-                 <widget class="QLabel" name="AudioInfoLabel">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true"/>
-                  </property>
-                  <property name="text">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style='line-height:30%'&gt;歌名&lt;/p&gt;&lt;p style='line-height:30%'&gt;歌手&lt;/p&gt;&lt;p style='line-height:30%'&gt;专辑&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QListWidget" name="LRCWidget">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="mouseTracking">
-                   <bool>true</bool>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">background-color:transparent;
-font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::NoFrame</enum>
-                  </property>
-                  <item>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="textAlignment">
-                    <set>AlignCenter</set>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
              </item>
              <item row="1" column="1">
               <widget class="QLabel" name="AlbumCoverLabel">
@@ -228,19 +184,6 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
                </property>
               </spacer>
              </item>
-             <item row="1" column="0">
-              <spacer name="horizontalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
              <item row="2" column="4">
               <spacer name="horizontalSpacer_5">
                <property name="orientation">
@@ -257,16 +200,148 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
                </property>
               </spacer>
              </item>
+             <item row="3" column="3">
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Expanding</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="1" column="0">
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="1" column="3">
+              <widget class="QWidget" name="widget" native="true">
+               <layout class="QVBoxLayout" name="verticalLayout_6">
+                <property name="spacing">
+                 <number>5</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="AudioInfoLabel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style='line-height:30%'&gt;歌名&lt;/p&gt;&lt;p style='line-height:30%'&gt;歌手&lt;/p&gt;&lt;p style='line-height:30%'&gt;专辑&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Fixed</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>5</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QListWidget" name="LRCWidget">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="mouseTracking">
+                   <bool>true</bool>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color:transparent;
+font: 700 11pt &quot;Microsoft YaHei&quot;;
+margin:7px 7px;</string>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::NoFrame</enum>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignCenter</set>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="WaveLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="frameShape">
-             <enum>QFrame::WinPanel</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <property name="text">
              <string>波形图</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -291,7 +366,7 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
           <enum>Qt::StrongFocus</enum>
          </property>
          <property name="frameShape">
-          <enum>QFrame::WinPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
@@ -366,6 +441,37 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
               <widget class="PlayerSlider" name="ProgressSlider">
                <property name="mouseTracking">
                 <bool>true</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QSlider::groove:horizontal{ 
+		height: 12px; 
+		left: 0px; 
+		right: 0px; 
+		border:0px;    //指定无边框
+	    border-radius:6px;    //指定圆角
+		background:rgba(0,0,0,50);
+ } 
+ //滑块的美化
+ QSlider::handle:horizontal{ 
+		width:  50px; 
+		height: 50px; 
+		margin-top: -20px; 
+		margin-left: 0px; 
+		margin-bottom: -20px; 
+		margin-right: 0px; 
+ 		border-image:url(:/res/images/setting_slider_handle.png);
+} 
+//已滑过的进度美化
+QSlider::sub-page:horizontal{
+	   background:rgba(80,166,234,1);
+}
+QSlider::sub-page:horizontal{
+	   background:rgba(80,166,234,1);
+}
+QSlider::add-page:horizontal
+{
+background: rgb(0,0,255);
+}</string>
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -666,8 +772,17 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
        <bool>true</bool>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
        <property name="topMargin">
         <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
        </property>
        <property name="bottomMargin">
         <number>0</number>
@@ -684,10 +799,13 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
           <bool>true</bool>
          </property>
          <property name="frameShape">
-          <enum>QFrame::WinPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>1</number>
          </property>
          <property name="widgetResizable">
           <bool>true</bool>
@@ -697,14 +815,48 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>278</width>
-            <height>554</height>
+            <width>256</width>
+            <height>558</height>
            </rect>
           </property>
           <property name="mouseTracking">
            <bool>true</bool>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="PlayListLabel">
+             <property name="styleSheet">
+              <string notr="true">QLabel
+{
+	background-color: #ffffff;
+	font: 25 10pt &quot;Microsoft YaHei&quot;;
+	font-weight:bold;
+}
+</string>
+             </property>
+             <property name="text">
+              <string>音视频列表</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="MyListWidget" name="ListWidget">
              <property name="sizePolicy">
@@ -724,6 +876,15 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
              </property>
              <property name="focusPolicy">
               <enum>Qt::StrongFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QListWidget::item {
+    height: 50px;
+}
+
+QListWidget {
+	font: 12 11pt &quot;Microsoft YaHei&quot;;
+}</string>
              </property>
              <property name="frameShape">
               <enum>QFrame::HLine</enum>
@@ -751,14 +912,14 @@ font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PlayerSlider</class>
-   <extends>QSlider</extends>
-   <header location="global">playerslider.h</header>
-  </customwidget>
-  <customwidget>
    <class>ChangeButtonColor</class>
    <extends>QToolButton</extends>
    <header location="global">changebuttoncolor.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PlayerSlider</class>
+   <extends>QSlider</extends>
+   <header location="global">playerslider.h</header>
   </customwidget>
   <customwidget>
    <class>MyListWidget</class>

@@ -55,3 +55,4 @@ LIBS += $$PWD/ffmpeg/lib/avcodec.lib \
 
 RESOURCES += \
     images.qrc
+RC_ICONS = Audivier.ico

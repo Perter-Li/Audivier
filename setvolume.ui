@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>33</width>
-    <height>124</height>
+    <width>50</width>
+    <height>143</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -20,7 +20,11 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border:1px solid black</string>
+   <string notr="true">border:1px solid black;
+border-radius: 10px;
+background-color: #ffffff;
+border: 1px solid #dcdfe6;
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="leftMargin">
@@ -39,6 +43,14 @@
     <widget class="QWidget" name="widget" native="true">
      <property name="focusPolicy">
       <enum>Qt::StrongFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::handle {
+    border-radius:5px;
+    background:rgba(80,166,234,1);
+    width: 18px;
+    margin: -3px 0;
+}</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="leftMargin">
@@ -62,7 +74,7 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">border:0px solid black</string>
+         <string notr="true">border:0px solid black;</string>
         </property>
         <property name="maximum">
          <number>100</number>

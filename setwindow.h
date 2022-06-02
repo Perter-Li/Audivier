@@ -25,9 +25,11 @@ private slots:
 private:
     Ui::SetWindow *ui;
     int frame=1;
+    int PlaySpeed=1;
 
 signals:
     void FrameSignal(int);
+    void PlaySpeedSignal(int);
 };
 
 #endif // SETWINDOW_H

@@ -22,5 +22,7 @@
         <file>images/SmallScreen.png</file>
         <file>images/Mute.png</file>
         <file>images/MusicAlbums.png</file>
+        <file>images/style.qss</file>
+        <file>images/logo.jpg</file>
     </qresource>
 </RCC>

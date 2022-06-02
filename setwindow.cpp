@@ -15,7 +15,17 @@ SetWindow::~SetWindow()
 
 void SetWindow::on_toolButton_clicked()
 {
-
+    if(this->PlaySpeed==1)
+    {
+        this->PlaySpeed=2;
+        ui->toolButton->setIcon(QIcon(":/images/2x.png"));
+    }
+    else if(this->PlaySpeed==2)
+    {
+        this->PlaySpeed=1;
+        ui->toolButton->setIcon(QIcon(":/images/1x.png"));
+    }
+    emit PlaySpeedSignal(this->PlaySpeed);
 }
 
 

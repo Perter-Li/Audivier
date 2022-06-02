@@ -34,6 +34,8 @@
 #include <stdio.h>
 #include <io.h>
 #include <direct.h>
+#include <QPixmap>
+#include <QPainter>
 
 
 extern "C"{
@@ -172,6 +174,7 @@ public:
     int setLRC(QString file);//设置歌词文件
     void setListWidgetLRC(QString FileName);//设置列表项
     void setListCurrentPlayingLRC(double sec);
+    void setAlbumSize();
 
     /*事件函数*/
     bool eventFilter(QObject *watched, QEvent *event);//事件过滤器
@@ -204,6 +207,7 @@ private slots:
     void on_SetButton_clicked();
     void SetVolumeValue(int value);
     void SetFrameValue(int frame);
+    void SetPlaySpeed(int playspeed);
     void ShowFrame(double value);
     void CloseFrame();
 
@@ -235,6 +239,8 @@ private:
     SetWindow sw;//设置窗口
     SetVolume Volumew;
     GetFrame gf;
+    QPixmap waveform_img;
+    int playwidth;
 
 
     /*数组*/

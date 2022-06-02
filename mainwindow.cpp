@@ -24,35 +24,45 @@ MainWindow::MainWindow(QWidget *parent)
     ui->PlayListWidget->setVisible(0);
     ui->AudioWidget->setVisible(0);  
     ui->LRCWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); //垂直滚动条
+    ui->LRCWidget->setSpacing(4);
 
     FunctionWidgetTimer=new QTimer(this);//定义功能栏定时器
     FunctionWidgetTimer->setInterval(5000);//设置间隔为5s
 
     LoadLocalCache();//载入数据
 
+    QFile qssFile(":/images/style.qss");
+    qssFile.open(QFile::ReadOnly);
+    QString styleSheet = tr(qssFile.readAll());
+    this->setStyleSheet(styleSheet);
+    qssFile.close();
+
     //连接操作
     connect(FunctionWidgetTimer,SIGNAL(timeout()),this,SLOT(on_timer_timeout()));//关联定时器与定时器槽函数
 
     m_sliderstate = false;
-    connect(ui->ProgressSlider, &PlayerSlider::mousepress, [=](int val){
+    connect(ui->ProgressSlider, &PlayerSlider::mousepress, [=](double val){
         m_sliderstate = true;
         PlayOrStopTag = 0;
         player->pause();
-        qDebug() << "progress slider pressed by mouse" << val;
+        ui->PlayButton->setIcon(QIcon(":/images/Play.png"));
+        //qDebug() << "progress slider pressed by mouse" << val;
     });
-    connect(ui->ProgressSlider, &PlayerSlider::mouserelease, [=](int val){
+    connect(ui->ProgressSlider, &PlayerSlider::mouserelease, [=](double val){
         m_sliderstate = false;
         player->setPosition(val*1000);
         ui->ProgressSlider->setValue(val*1000);
         PlayOrStopTag = 1;
         player->play();
+        ui->PlayButton->setIcon(QIcon(":/images/Stop.png"));
         qint64 playtime = player->position();
-        qDebug() << "progress slider released by mouse" << val;
+        //qDebug() << "progress slider released by mouse" << val;
     });
 
     connect(ui->ListWidget,SIGNAL(ItemDragSignal()),this,SLOT(UpdateCurrentAudioOrVedio()));
     connect(&Volumew,SIGNAL(VolumeSignal(int)),this,SLOT(SetVolumeValue(int)));
     connect(&sw,SIGNAL(FrameSignal(int)),this,SLOT(SetFrameValue(int)));
+    connect(&sw,SIGNAL(PlaySpeedSignal(int)),this,SLOT(SetPlaySpeed(int)));
     connect(ui->ProgressSlider,SIGNAL(SliderMouseMove(double)),this,SLOT(ShowFrame(double)));
     connect(ui->ProgressSlider,SIGNAL(SliderMouseLeave()),this,SLOT(CloseFrame()));
 
@@ -62,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    Audio TempAudio("C:\\Users\\hikari\\Desktop\\Download\\interviewer.mp3");
 //    AudioVector.append(TempAudio);
 //    qDebug()<<FindAudioOrVideoByName("interviewer.mp3");
-
+    //ui->MainWidget->setWindowOpacity(1);
 }
 
 MainWindow::~MainWindow()
@@ -230,18 +240,30 @@ void MainWindow::PlayAudioAndVedio(QString file)
         ui->AudioInfoLabel->clear();
         ui->LRCWidget->clear();
         ui->AudioWidget->setVisible(1);
-        ui->WaveLabel->setVisible(0);
+        ui->WaveLabel->setVisible(1);
         ui->VideoScreenLabel->setVisible(0);
-        if(!AudioVector[FindAudioOrVideoByName(f.fileName())].cover.isNull())//如果文件存在
+        int AlbumSizeH=ui->MainWidget->size().height()/2;
+        int AlbumSizeW=ui->MainWidget->size().width()/2;
+        if(AlbumSizeH>AlbumSizeW)
         {
-            ui->AlbumCoverLabel->setPixmap(QPixmap::fromImage(AudioVector[FindAudioOrVideoByName(f.fileName())].cover).scaled(ui->MainWidget->size()/2,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
+            AlbumSizeH=AlbumSizeW;
         }
         else
         {
-            ui->AlbumCoverLabel->setPixmap(QPixmap::fromImage(QImage(":/images/MusicAlbums.png")).scaled(ui->MainWidget->size()/2));
+            AlbumSizeW=AlbumSizeH;
+        }
+        QSize AlbumSize(AlbumSizeW,AlbumSizeH);
+        if(!AudioVector[FindAudioOrVideoByName(f.fileName())].cover.isNull())//如果文件存在
+        {
+            ui->AlbumCoverLabel->setPixmap(QPixmap::fromImage(AudioVector[FindAudioOrVideoByName(f.fileName())].cover).scaled(AlbumSize,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
+        }
+        else
+        {
+            ui->AlbumCoverLabel->setPixmap(QPixmap::fromImage(QImage(":/images/MusicAlbums.png")).scaled(AlbumSize));
         }
         setListWidgetLRC(f.fileName());
         NowPlayType=2;//将当前播放的类型设置为音频
+        this->waveform_img = QPixmap::fromImage(AudioVector[FindAudioOrVideoByName(f.fileName())].getWaveform());
     }
     PlayOrStopTag=1;//设置播放状态为“正在播放”
     ui->PlayButton->setIcon(QIcon(":/images/Stop.png"));//设置图标
@@ -479,7 +501,7 @@ void MainWindow::AddListItem(QString FileAdd)
     QFileInfo file(FileAdd);
     //QString AbsPath=file.absoluteFilePath();//获取绝对路径
     QString FileName=file.fileName();//获取文件名
-    qDebug()<<FileName;
+    //qDebug()<<FileName;
     //QString temp=FileName+"\t"+AbsPath;
     QString temp=FileName;
     QListWidgetItem* item=new QListWidgetItem(temp);
@@ -504,18 +526,65 @@ void MainWindow::setget_Alltime(qint64 playtime)
 
 void MainWindow::setget_currenttime(qint64 playtime)
 {
-    playtime /= 1000;
-    settimeslider(playtime);
-    int h = playtime / 3600;
-    int m = (playtime - h * 3600) / 60;
-    int s = playtime - h * 3600 - m * 60;
+    setListCurrentPlayingLRC(playtime);
+    int playtime_int = playtime/1000;
+    double playtime_double =double(playtime)/1000;
+    settimeslider(playtime_int);
+    int h = playtime_int / 3600;
+    int m = (playtime_int - h * 3600) / 60;
+    int s = playtime_int - h * 3600 - m * 60;
     QString str = QString("%1:%2:%3").arg(h).arg(m).arg(s);
     ui->CurrentTimeLabel->setText(str);
-    setListCurrentPlayingLRC(playtime);
+    int playwidth;
+    //playwidth=this->width()-ui->ListWidget->width()-60;
+    playwidth=ui->MainWidget->width();
+
+
+    //ui->AlbumCoverLabel->resize(ui->MainWidget->size()/2);
+
     if(player->mediaStatus()==QMediaPlayer::EndOfMedia)
     {
         on_NextVedioButton_clicked();
     }
+
+    // 对this->waveform_img进行绘制和显示的更新
+        /* 1. 总时长由 this->waveform_img.width()获得，同时也是waveform的宽度
+         * 2. 能显示的宽度为 ui->label_waveform.width
+         * 3. 根据当前时间 playtime决定所显示的 pixmap部分
+         * 4. ui->label_waveform即为波形图的空间qlabel
+         */
+        int x, wave_width, /*brush_width,*/ x1;  // 当播放时长的10倍（设置了waveform.png的宽度时播放时长（秒）的十倍的值个像素）未及波形图显示框的一半时，x=0
+        if(playtime_double * 10 < playwidth / 2)
+        {
+            x = 0;
+    //        brush_width = playtime * 10;
+            x1 = playtime_double * 10;
+            wave_width = playwidth > this->waveform_img.width()? this->waveform_img.width() : playwidth;
+        }
+        else
+        {
+            x = playtime_double * 10 - playwidth / 2;
+    //        brush_width = ui->label_waveform->width() / 2;
+            x1 = playwidth / 2;
+            wave_width = playwidth > this->waveform_img.width() - x? this->waveform_img.width() - x : playwidth;
+        }
+        //qDebug() << "playtime * 10: " << playtime_double * 10 << "\tx: " << x << "\twidth: " << wave_width;
+        QPixmap show_pixmap = this->waveform_img.QPixmap::copy(x, 0,  playwidth, ui->AudioShowWidget->height());
+
+        // 绘制波形图的位置线
+        QPainter painter(&show_pixmap);
+    //    QColor color(Qt::black);
+    //    color.setAlpha(100);
+    //    painter.setPen(Qt::NoPen);
+    //    QBrush brush(color);
+    //    painter.setBrush(brush);
+
+    //    QRectF posRect(0, 0, brush_width, ui->label_waveform->height());
+    //    painter.drawRect(posRect);
+        painter.setPen(Qt::red);
+        painter.drawLine(x1, 0, x1, ui->AudioShowWidget->height());
+
+        ui->WaveLabel->setPixmap(show_pixmap);
 }
 
 void MainWindow::settimeslider(qint64 playtime)
@@ -652,7 +721,7 @@ void MainWindow::setListWidgetLRC(QString FileName)
                     QString textl=list[i].split("]")[0];
                     if(textl.mid(1,2)=="ti")
                     {
-                        AudioInfo+="<b><font size=\"4\"> ";
+                        AudioInfo+="<b><font size=\"5\"> ";
                         AudioInfo+=textl.mid(4,textl.length()-4);
                         AudioInfo+="</font></b>";
                         AudioInfo+="<br>";
@@ -660,15 +729,17 @@ void MainWindow::setListWidgetLRC(QString FileName)
                     }
                     if(textl.mid(1,2)=="ar")
                     {
-                        AudioInfo+="歌手：";
+                        AudioInfo+="<font size=\"3\"> 歌手：";
                         AudioInfo+=textl.mid(4,textl.length()-4);
+                        AudioInfo+="</font>";
                         AudioInfo+="<br>";
                         continue;
                     }
                     if(textl.mid(1,2)=="al")
                     {
-                        AudioInfo+="专辑：";
+                        AudioInfo+="<font size=\"3\">专辑：";
                         AudioInfo+=textl.mid(4,textl.length()-4);
+                        AudioInfo+="</font>";
                         AudioInfo+="<br>";
                         continue;
                     }
@@ -702,7 +773,7 @@ void MainWindow::setListWidgetLRC(QString FileName)
 
 void MainWindow::setListCurrentPlayingLRC(double sec)
 {
-    double msec=sec*1000;
+    double msec=sec;
     int i=0;
     for(;i<LyricVector.length();i++)
     {
@@ -712,6 +783,10 @@ void MainWindow::setListCurrentPlayingLRC(double sec)
         }
     }
     ui->LRCWidget->setCurrentRow(i-1);
+}
+void MainWindow::setAlbumSize()
+{
+
 }
 /*-------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------事件函数---------------------------------------------------*/
@@ -812,7 +887,11 @@ void MainWindow::on_ListWidget_itemDoubleClicked(QListWidgetItem *item)
 {
     if(CurrentAudioOrVedio!=-1)
     {
-        SetCurrentListItemColor(QColor(255,255,255));
+        for(int i=0;i<ui->ListWidget->count();i++)
+        {
+            ui->ListWidget->item(i)->setBackground(QColor(255,255,255));
+        }
+        //SetCurrentListItemColor(QColor(255,255,255));
     }
     CurrentAudioOrVedio=ui->ListWidget->currentRow();
     SetCurrentListItemColor(QColor(255,182,193));
@@ -916,6 +995,14 @@ void MainWindow::keyPressEvent(QKeyEvent *ev)
            {
 
            }
+           if(isAudioOrVideo(ListWidgetItemList[i]->text())==1)
+           {
+               VideoVector.erase(VideoVector.begin()+FindAudioOrVideoByName(ListWidgetItemList[i]->text()));
+           }
+           else
+           {
+               AudioVector.erase(AudioVector.begin()+FindAudioOrVideoByName(ListWidgetItemList[i]->text()));
+           }
            QListWidgetItem* j = ListWidgetItemList[i];
            delete j;
        }
@@ -1015,15 +1102,16 @@ void MainWindow::on_PlayButton_clicked()
 {
     if(PlayOrStopTag==0)
     {
+        player->play();
         PlayOrStopTag=1;
         ui->PlayButton->setIcon(QIcon(":/images/Stop.png"));
-        player->play();
+
     }
     else if(PlayOrStopTag==1)
     {
+        player->pause();
         PlayOrStopTag=0;
         ui->PlayButton->setIcon(QIcon(":/images/Play.png"));
-        player->pause();
     }
 }
 
@@ -1032,40 +1120,64 @@ void MainWindow::on_FullScreenButton_clicked()
 {
     if(this->isFullScreen()==0)//如果当前不是全屏
     {
-        ui->FunctionWidget->setVisible(0);//功能栏隐藏
-        this->setWindowFlags(Qt::FramelessWindowHint);//最小化、窗口化、退出按钮隐藏
+        if(NowPlayType==1)
+        {
+            ui->FunctionWidget->setVisible(0);//功能栏隐藏
+            this->setWindowFlags(Qt::FramelessWindowHint);//最小化、窗口化、退出按钮隐藏
+            this->setCursor(Qt::BlankCursor); //隐藏鼠标
+        }
         ui->PlayListWidget->setVisible(0);//将播放列表设置为不可见
         this->showFullScreen();//当前窗口全屏
         ui->FullScreenButton->setIcon(QIcon(":/images/SmallScreen.png"));//改变全屏按钮的图表
         ui->centralwidget->layout()->setContentsMargins(0,0,0,0);//将边框设置为0
         ui->VideoScreenLabel->setFrameShape(QFrame::Shape(QFrame::NoFrame));//将播放标签设置为无边框
-        this->setCursor(Qt::BlankCursor); //隐藏鼠标
     }
     else//如果当前是全屏
     {
-        ui->FunctionWidget->setVisible(1);//功能栏出现
-        FunctionWidgetTimer->stop();//计时器停止即使，避免功能栏被隐藏
-        this->setWindowFlags(Qt::Window);//最小化、窗口化、退出按钮出现
+        if(NowPlayType==1)
+        {
+            ui->FunctionWidget->setVisible(1);//功能栏出现
+            this->setCursor(Qt::ArrowCursor); //显示鼠标
+            this->setWindowFlags(Qt::Window);//最小化、窗口化、退出按钮出现
+        }
         this->showNormal();//恢复正常尺寸
+        FunctionWidgetTimer->stop();//计时器停止即使，避免功能栏被隐藏
         ui->FullScreenButton->setIcon(QIcon(":/images/FullScreen.png"));//改变全屏按钮的图表
         ui->centralwidget->layout()->setContentsMargins(11,11,11,11);//将边框设置为11
-        ui->VideoScreenLabel->setFrameShape(QFrame::Shape(QFrame::WinPanel));//将播放标签设置为有边框
+        //ui->VideoScreenLabel->setFrameShape(QFrame::Shape(QFrame::WinPanel));//将播放标签设置为有边框
         this->resize(847,580);//设置为原大小
         //使得屏幕居中显示
         QScreen *screen = QGuiApplication::primaryScreen ();
         QRect screenRect =  screen->availableVirtualGeometry();
         this->move((screenRect.width() - this->width())/ 2, (screenRect.height() - this->height()) /2);
-        this->setCursor(Qt::ArrowCursor); //显示鼠标
+    }
+    if(NowPlayType==2)
+    {
+        int AlbumSizeH=ui->MainWidget->size().height()/2;
+        int AlbumSizeW=ui->MainWidget->size().width()/2;
+        if(AlbumSizeH>AlbumSizeW)
+        {
+            AlbumSizeH=AlbumSizeW;
+        }
+        else
+        {
+            AlbumSizeW=AlbumSizeH;
+        }
+        QSize AlbumSize(AlbumSizeW,AlbumSizeH);
+        ui->AlbumCoverLabel->setPixmap(QPixmap::fromImage(AudioVector[FindAudioOrVideoByName(ui->ListWidget->item(this->CurrentAudioOrVedio)->text())].cover).scaled(AlbumSize,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
     }
 }
 
 //计时器槽函数
 void MainWindow::on_timer_timeout()//计时器时间到
 {
-    ui->FunctionWidget->setVisible(0);//隐藏功能栏
-    ui->PlayListWidget->setVisible(0);//隐藏播放列表
-    FunctionWidgetTimer->stop();//停止计时
-    this->setCursor(Qt::BlankCursor); //隐藏鼠标
+    if(NowPlayType==1)
+    {
+        ui->FunctionWidget->setVisible(0);//隐藏功能栏
+        ui->PlayListWidget->setVisible(0);//隐藏播放列表
+        FunctionWidgetTimer->stop();//停止计时
+        this->setCursor(Qt::BlankCursor); //隐藏鼠标
+    }
 }
 
 //显示播放列表按钮槽函数
@@ -1208,7 +1320,6 @@ void MainWindow::UpdateCurrentAudioOrVedio()
             break;
         }
     }
-    qDebug()<<CurrentAudioOrVedio;
     SaveLocalCache();
 }
 
@@ -1219,7 +1330,7 @@ void MainWindow::on_VoiceButton_clicked()
     //sw.setWindowFlags(sw.windowFlags() | Qt::WindowStaysOnTopHint);
     //Volumew.move(this->pos()+ui->FunctionWidget->pos()+ui->ButtonWidget->pos()+ui->ModeWidget->pos()+ui->VoiceButton->pos());
     //Volumew.move(this->pos()+ui->centralwidget->pos()+ui->MainWidget->pos()+ui->FunctionWidget->pos()+ui->ButtonWidget->pos()+ui->ModeWidget->pos()+ui->VoiceButton->pos());
-    Volumew.move(this->geometry().x()+ui->centralwidget->geometry().x()+ui->MainWidget->geometry().x()+ui->FunctionWidget->geometry().x()+ui->ButtonWidget->geometry().x()+ui->ModeWidget->geometry().x()+ui->VoiceButton->geometry().x()-3,this->geometry().y()+ui->centralwidget->geometry().y()+ui->MainWidget->geometry().y()+ui->FunctionWidget->geometry().y()+ui->ButtonWidget->geometry().y()+ui->ModeWidget->geometry().y()+ui->VoiceButton->geometry().y()-95);
+    Volumew.move(this->geometry().x()+ui->centralwidget->geometry().x()+ui->MainWidget->geometry().x()+ui->FunctionWidget->geometry().x()+ui->ButtonWidget->geometry().x()+ui->ModeWidget->geometry().x()+ui->VoiceButton->geometry().x()-4,this->geometry().y()+ui->centralwidget->geometry().y()+ui->MainWidget->geometry().y()+ui->FunctionWidget->geometry().y()+ui->ButtonWidget->geometry().y()+ui->ModeWidget->geometry().y()+ui->VoiceButton->geometry().y()-95);
     Volumew.show();
 }
 
@@ -1227,7 +1338,7 @@ void MainWindow::on_SetButton_clicked()
 {
     sw.setWindowFlags(Qt::FramelessWindowHint|Qt::Tool);
     //sw.setWindowFlags(sw.windowFlags() | Qt::WindowStaysOnTopHint);
-    sw.move(this->geometry().x()+ui->centralwidget->geometry().x()+ui->MainWidget->geometry().x()+ui->FunctionWidget->geometry().x()+ui->ButtonWidget->geometry().x()+ui->ModeWidget->geometry().x()+ui->SetButton->geometry().x()-2,this->geometry().y()+ui->centralwidget->geometry().y()+ui->MainWidget->geometry().y()+ui->FunctionWidget->geometry().y()+ui->ButtonWidget->geometry().y()+ui->ModeWidget->geometry().y()+ui->SetButton->geometry().y()-67);
+    sw.move(this->geometry().x()+ui->centralwidget->geometry().x()+ui->MainWidget->geometry().x()+ui->FunctionWidget->geometry().x()+ui->ButtonWidget->geometry().x()+ui->ModeWidget->geometry().x()+ui->SetButton->geometry().x()-4,this->geometry().y()+ui->centralwidget->geometry().y()+ui->MainWidget->geometry().y()+ui->FunctionWidget->geometry().y()+ui->ButtonWidget->geometry().y()+ui->ModeWidget->geometry().y()+ui->SetButton->geometry().y()-98);
     sw.show();
 }
 void MainWindow::SetVolumeValue(int value)
@@ -1297,19 +1408,19 @@ void MainWindow::ShowFrame(double value)
     av_register_all();
     pFormatCtx = avformat_alloc_context();
     if(NULL == pFormatCtx){
-        qDebug() << "avformat_alloc_context() failed.";
+        //qDebug() << "avformat_alloc_context() failed.";
     }
 
     // 1. 打开视频文件;
     ret = avformat_open_input(&pFormatCtx, file_path, NULL, NULL);
     if(ret < 0){
-        qDebug() << "avformat_open_input() failed.";
+        //qDebug() << "avformat_open_input() failed.";
     }
 
     // 2. 读取视频文件信息;
     ret = avformat_find_stream_info(pFormatCtx, NULL);
     if (ret < 0) {
-        qDebug() << "avformat_find_stream_info() failed.";
+        //qDebug() << "avformat_find_stream_info() failed.";
     }
 
     // 3. 获取视频流
@@ -1319,37 +1430,37 @@ void MainWindow::ShowFrame(double value)
         }
     }
     if (videoStream == -1) {
-        qDebug() << "coun't find a video stream.";
+        //qDebug() << "coun't find a video stream.";
     }
 
     // 4. 根据上面得到的视频流类型打开对应的解码器
     pCodecCtx = pFormatCtx->streams[videoStream]->codec;
     pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
     if (pCodec == NULL) {
-        qDebug() <<"Decoder not found.";
+        //qDebug() <<"Decoder not found.";
     }
     if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
-        qDebug() <<"Ddecoder couldn't open.";
+        //qDebug() <<"Ddecoder couldn't open.";
     }
 
     // 5. 分配并初始化一个视频packet
     image_size = pCodecCtx->width * pCodecCtx->height;
     packet = (AVPacket *) malloc(sizeof(AVPacket)); //分配一个packet
     if(!packet){
-        qDebug() <<"malloc() failed.";
+        //qDebug() <<"malloc() failed.";
     }
     ret = av_new_packet(packet, image_size);
     if(ret < 0){
-        qDebug() <<"av_new_packet() failed.";
+        //qDebug() <<"av_new_packet() failed.";
     }
 
     // 6. 分配两个frame分别存放yuv和rgb数据
     pFrame = av_frame_alloc();
     pFrameRGB = av_frame_alloc();
     if(!pFrame || !pFrameRGB){
-        qDebug() <<"pFrame:" << pFrame
-               <<", pFrameRGB:" << pFrameRGB
-              <<" av_frame_alloc() failed";
+//        qDebug() <<"pFrame:" << pFrame
+//               <<", pFrameRGB:" << pFrameRGB
+//              <<" av_frame_alloc() failed";
     }
 
     // 7. 分配一个struct SwsContext结构体, 填充源图像和目标图像信息(为接下来的转换做准备)
@@ -1363,10 +1474,10 @@ void MainWindow::ShowFrame(double value)
     ret = avpicture_fill((AVPicture *) pFrameRGB, out_buffer, AV_PIX_FMT_RGB24,
                 pCodecCtx->width, pCodecCtx->height);
     if (!img_convert_ctx || numBytes<0 || !out_buffer || ret<0) {
-        qDebug() <<"img_convert_ctx:" << img_convert_ctx
-               <<", numBytes:" << numBytes
-              <<", out_buffer:" << out_buffer
-             <<", ret:" <<ret;
+//        qDebug() <<"img_convert_ctx:" << img_convert_ctx
+//               <<", numBytes:" << numBytes
+//              <<", out_buffer:" << out_buffer
+//             <<", ret:" <<ret;
     }
 
     // 9. 按时间寻找需要的帧
@@ -1380,7 +1491,7 @@ void MainWindow::ShowFrame(double value)
         if (packet->stream_index == videoStream) {
             ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture,packet);
             if (ret < 0) {
-                qDebug() << "decode error.";
+                //qDebug() << "decode error.";
             }
         }
 
@@ -1413,5 +1524,10 @@ void MainWindow::CloseFrame()
 {
     if(NowPlayType==2)return;
     gf.close();
+}
+
+void MainWindow::SetPlaySpeed(int playspeed)
+{
+    player->setPlaybackRate(playspeed);
 }
 

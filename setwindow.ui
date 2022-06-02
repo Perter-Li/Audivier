@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>33</width>
-    <height>97</height>
+    <width>49</width>
+    <height>145</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,7 +29,10 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border:1px solid black</string>
+   <string notr="true">border:1px solid black;
+border-radius: 10px;
+background-color: #ffffff;
+border: 1px solid #dcdfe6;</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="leftMargin">

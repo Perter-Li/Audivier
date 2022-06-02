@@ -16,11 +16,11 @@ void ChangeButtonColor::enterEvent(QEnterEvent * e)
 {
     //qDebug()<<"鼠标移入";
     QToolButton::enterEvent(e);
-    this->setStyleSheet("QToolButton{background:rgba(128, 128, 128,0.3);}");
+    this->setStyleSheet("QToolButton{background:rgba(135, 206, 250,0.3);}");
 }
 void ChangeButtonColor::leaveEvent(QEvent * e)
 {
-    this->setStyleSheet("QToolButton{background:rgba(128, 128, 128,0);}");
+    this->setStyleSheet("QToolButton{background:rgba(135, 206, 250,0);}");
     //qDebug()<<"鼠标移出";
 }
 

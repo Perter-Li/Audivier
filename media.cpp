@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "windows.h"
+#include <stdio.h>
 
 MediaTime::MediaTime(qint64 play_time) //play_time单位为秒
 {
@@ -67,14 +68,14 @@ Video::Video(const char* path):Media(path)
     //成功时返回=0
     int result=avformat_open_input(&guard.formatCtx, path, NULL, NULL);
     if (result!=0||guard.formatCtx==NULL){
-        qDebug() << "avformat_open_input failed!";
+        //qDebug() << "avformat_open_input failed!";
         return ;
     }
 
     //读取文件获取流信息，把它存入AVFormatContext中
     //正常时返回>=0
     if (avformat_find_stream_info(guard.formatCtx, NULL) < 0) {
-        qDebug() << "avformat_find_stream_info failed!";
+        //qDebug() << "avformat_find_stream_info failed!";
         return ;
     }
 
@@ -86,7 +87,7 @@ Video::Video(const char* path):Media(path)
             //失败返回NULL
             guard.codec = avcodec_find_decoder(in_stream->codecpar->codec_id);
             if(guard.codec==NULL){
-                qDebug() << "guard.codec==NULL";
+                //qDebug() << "guard.codec==NULL";
                 return ;
             }
 
@@ -95,7 +96,7 @@ Video::Video(const char* path):Media(path)
             //如果失败，则返回默认填充或者 NULL
             guard.codecCtx = avcodec_alloc_context3(guard.codec);
             if(guard.codecCtx==NULL){
-                qDebug() << "guard.codecCtx==NULL";
+                //qDebug() << "guard.codecCtx==NULL";
                 return ;
             }
 
@@ -103,7 +104,7 @@ Video::Video(const char* path):Media(path)
             //事实上codecpar包含了大部分解码器相关的信息，这里是直接从AVCodecParameters复制到AVCodecContext
             //成功时返回值>=0
             if(avcodec_parameters_to_context(guard.codecCtx, in_stream->codecpar)<0){
-                qDebug() << "avcodec_parameters_to_context(guard.codecCtx, in_stream->codecpar)<0";
+                //qDebug() << "avcodec_parameters_to_context(guard.codecCtx, in_stream->codecpar)<0";
                 return ;
             }
 
@@ -115,7 +116,7 @@ Video::Video(const char* path):Media(path)
             //在之前必须使用avcodec_alloc_context3()分配上下文
             //成功时返回值=0
             if(avcodec_open2(guard.codecCtx, guard.codec, nullptr)!=0){
-                qDebug() << "avcodec_open2(guard.codecCtx, guard.codec, nullptr)!=0";
+                //qDebug() << "avcodec_open2(guard.codecCtx, guard.codec, nullptr)!=0";
                 return ;
             }
             int i;
@@ -153,14 +154,14 @@ QString Video::getInfo()
             QString("Frame Num: %1").arg(this->nb_frames) + "\n" +
             "Resolution: " + this->resolution + "\n" +
             "Duration: " + this->duration.getTime() + "\n";
-    qDebug() << "Name: " + this->name;
-    qDebug() << "Path: " + this->path;
-    qDebug() << "Codec: " + this->codec;
-    qDebug() << "Bit Rate: " + this->bit_rate;
-    qDebug() << "Frame Rate: " + this->frame_rate;
-    qDebug() << QString("Frame Num: %1").arg(this->nb_frames);
-    qDebug() << "Resolution: " + this->resolution;
-    qDebug() << "Duration: " + this->duration.getTime();
+//    qDebug() << "Name: " + this->name;
+//    qDebug() << "Path: " + this->path;
+//    qDebug() << "Codec: " + this->codec;
+//    qDebug() << "Bit Rate: " + this->bit_rate;
+//    qDebug() << "Frame Rate: " + this->frame_rate;
+//    qDebug() << QString("Frame Num: %1").arg(this->nb_frames);
+//    qDebug() << "Resolution: " + this->resolution;
+//    qDebug() << "Duration: " + this->duration.getTime();
     return output;
 }
 
@@ -174,14 +175,14 @@ Audio::Audio(const char* path):Media(path)
     //成功时返回=0
     int result=avformat_open_input(&guard.formatCtx, path, NULL, NULL);
     if (result!=0||guard.formatCtx==NULL){
-        qDebug() << "avformat_open_input failed!";
+        //qDebug() << "avformat_open_input failed!";
         return ;
     }
 
     //读取文件获取流信息，把它存入AVFormatContext中
     //正常时返回>=0
     if (avformat_find_stream_info(guard.formatCtx, NULL) < 0) {
-        qDebug() << "avformat_find_stream_info failed!";
+        //qDebug() << "avformat_find_stream_info failed!";
         return ;
     }
 
@@ -202,7 +203,7 @@ Audio::Audio(const char* path):Media(path)
             //失败返回NULL
             guard.codec = avcodec_find_decoder(in_stream->codecpar->codec_id);
             if(guard.codec==NULL){
-                qDebug() << "guard.codec==NULL";
+                //qDebug() << "guard.codec==NULL";
                 return ;
             }
 
@@ -211,7 +212,7 @@ Audio::Audio(const char* path):Media(path)
             //如果失败，则返回默认填充或者 NULL
             guard.codecCtx = avcodec_alloc_context3(guard.codec);
             if(guard.codecCtx==NULL){
-                qDebug() << "guard.codecCtx==NULL";
+                //qDebug() << "guard.codecCtx==NULL";
                 return ;
             }
 
@@ -219,7 +220,7 @@ Audio::Audio(const char* path):Media(path)
             //事实上codecpar包含了大部分解码器相关的信息，这里是直接从AVCodecParameters复制到AVCodecContext
             //成功时返回值>=0
             if(avcodec_parameters_to_context(guard.codecCtx, in_stream->codecpar)<0){
-                qDebug() << "avcodec_parameters_to_context(guard.codecCtx, in_stream->codecpar)<0";
+                //qDebug() << "avcodec_parameters_to_context(guard.codecCtx, in_stream->codecpar)<0";
                 return ;
             }
 
@@ -231,7 +232,7 @@ Audio::Audio(const char* path):Media(path)
             //在之前必须使用avcodec_alloc_context3()分配上下文
             //成功时返回值=0
             if(avcodec_open2(guard.codecCtx, guard.codec, nullptr)!=0){
-                qDebug() << "avcodec_open2(guard.codecCtx, guard.codec, nullptr)!=0";
+                //qDebug() << "avcodec_open2(guard.codecCtx, guard.codec, nullptr)!=0";
                 return ;
             }
             this->bit_rate = QString::number(guard.formatCtx->bit_rate) + "bps";
@@ -239,7 +240,7 @@ Audio::Audio(const char* path):Media(path)
             this->codec = QString(guard.codec->long_name);
             AVDictionaryEntry* entry = nullptr;
             while ((entry = av_dict_get(guard.formatCtx->metadata, "", entry, AV_DICT_IGNORE_SUFFIX))) {
-//                qDebug() << entry->key << entry->value;
+//                //qDebug() << entry->key << entry->value;
                 if(strcmp(entry->key, "title") == 0)
                     this->name = QString(entry->value);
                 if(strcmp(entry->key, "album") == 0)
@@ -252,34 +253,49 @@ Audio::Audio(const char* path):Media(path)
     this->name=QFileInfo(path).fileName();
     this->lyricpath="";
 
+    // 生成波形图
+    /* 1. 包含头文件: "windows.h", <cstdlib>, <stdio.h>, <io.h>, <direct.h>.
+     * 2. 在Audio类中添加成员函数: QImage get_waveform(), 不添加数据成员QImage waveform的原因是节省内存RAM
+     * 3. 和 2.同理,提取封面图也可以改用这种方法节省内存
+     * 4. MediaTime类增加了一个函数qint64 getSec()用于提取总时长的秒数
+    */
+    // 建立波形图缓存文件夹 wave_form_imgs
+
+
     if (_access("wave_form_imgs",0) == -1)
     {
-        qDebug() << "The file/dir doesn't exisit";
+        //qDebug() << "The file/dir doesn't exisit";
     }
     else
     {
-        qDebug() << "Exisit ";
+        //qDebug() << "Exisit ";
         _mkdir("wave_form_imgs");
     }
-//    std::string ffmpeg_exe_path = "./";
-//    std::string output_path = "wave_form_imgs\\" + this->name.toStdString() + ".png";
-//    qint64 audio_length = this->duration.getSec();
-//    std::string waveform_img_width = QString::number(audio_length * 10).toStdString();  // 音频长度为72秒，则波形图宽度为720p
-//    std::string waveform_img_height = "100";  // 建议直接设置成 ui->label_waveform的高度
-//    std::string cmd = ffmpeg_exe_path + " -i " + this->path.toStdString() + " -filter_complex \"showwavespic=s=" + waveform_img_width + "x" + waveform_img_height + ":colors=0xff0000\" -frames:v 1 " + output_path;
-//    qDebug() << QString::fromStdString(cmd);
-//    WinExec(cmd.c_str(), SW_HIDE);
-//    while(1)  //检查波形图是否已经生成
-//    {
-//        if(_access(output_path.c_str(), 0) == -1);
-//        else
-//            break;
-//    }
+    std::string ffmpeg_exe_path = "ffmpeg";
+    std::string output_path = "wave_form_imgs\\" + this->name.toStdString() + ".png";
+    qint64 audio_length = this->duration.getSec();
+    std::string waveform_img_width = QString::number(audio_length * 10).toStdString();  // 音频长度为72秒，则波形图宽度为720p
+    std::string waveform_img_height = "70";  // 建议直接设置成 ui->label_waveform的高度
+    std::string cmd = ffmpeg_exe_path + " -i " + this->path.toStdString() + " -filter_complex \"showwavespic=s=" + waveform_img_width + "x" + waveform_img_height + ":colors=0x66ccff\" -frames:v 1 " + output_path;
+    //qDebug() << QString::fromStdString(cmd);
+    WinExec(cmd.c_str(), SW_HIDE);
+    while(1)  //检查波形图是否已经生成
+    {
+        if(_access(output_path.c_str(), 0) == -1);
+        else
+            break;
+    }
 }
 
 QImage Audio::getCover()
 {
     return this->cover;
+}
+
+QImage Audio::getWaveform()
+{
+    //qDebug() << QString::fromStdString("wave_form_imgs\\" + this->name.toStdString() + ".png");
+    return QImage(QString::fromStdString("wave_form_imgs\\" + this->name.toStdString() + ".png"));
 }
 
 qint64 MediaTime::getSec()
@@ -299,21 +315,15 @@ QString Audio::getInfo()
             "Bit Rate: " + this->bit_rate + "\n" +
             QString("Channels: %1").arg(this->channel_count) + "\n" +
             "Duration: " + this->duration.getTime() + "\n";
-    qDebug() << "Name: " + this->name;
-    qDebug() << "Path: " + this->path;
-    qDebug() << "Artist: " + this->artist;
-    qDebug() << "Album: " + this->album ;
-    qDebug() << "Codec: " + this->codec ;
-    qDebug() << "Bit Rate: " + this->bit_rate ;
-    qDebug() << QString("Channels: %1").arg(this->channel_count);
-    qDebug() << "Duration: " + this->duration.getTime();
+//    qDebug() << "Name: " + this->name;
+//    qDebug() << "Path: " + this->path;
+//    qDebug() << "Artist: " + this->artist;
+//    qDebug() << "Album: " + this->album ;
+//    qDebug() << "Codec: " + this->codec ;
+//    qDebug() << "Bit Rate: " + this->bit_rate ;
+//    qDebug() << QString("Channels: %1").arg(this->channel_count);
+//    qDebug() << "Duration: " + this->duration.getTime();
     return output;
-}
-
-QImage Audio::getWaveform()
-{
-    qDebug() << QString::fromStdString("wave_form_imgs\\" + this->name.toStdString() + ".png");
-    return QImage(QString::fromStdString("wave_form_imgs\\" + this->name.toStdString() + ".png"));
 }
 
 Lyric::Lyric(double time,QString text)

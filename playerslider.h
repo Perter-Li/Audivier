@@ -16,8 +16,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *ev);
     void leaveEvent(QEvent * e);
 signals:
-    void mousepress(int value);
-    void mouserelease(int value);
+    void mousepress(double value);
+    void mouserelease(double value);
     void SliderMouseMove(double value);
     void SliderMouseLeave();
 

@@ -1,5 +1,6 @@
 #include "setvolume.h"
 #include "ui_setvolume.h"
+#include <QFile>
 
 SetVolume::SetVolume(QWidget *parent) :
     QWidget(parent),
@@ -30,6 +31,6 @@ void SetVolume::on_verticalSlider_valueChanged(int value)
     {
         ui->toolButton->setIcon(QIcon(":/images/Voice.png"));
     }
-    //qDebug()<<ui->verticalSlider->value();
+    //()<<ui->verticalSlider->value();
 }
 
