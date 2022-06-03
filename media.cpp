@@ -265,10 +265,6 @@ Audio::Audio(const char* path):Media(path)
     if (_access("wave_form_imgs",0) == -1)
     {
         //qDebug() << "The file/dir doesn't exisit";
-    }
-    else
-    {
-        //qDebug() << "Exisit ";
         _mkdir("wave_form_imgs");
     }
     std::string ffmpeg_exe_path = "ffmpeg";
