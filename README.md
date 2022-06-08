@@ -242,7 +242,7 @@ SDL2.dll  SDL2.lib  SDL2main.lib  SDL2test.lib
 
 
 
-相关的功能运行，可参考功能演示视频，位于/res/功能演示.mvk 中。
+相关的功能运行，可参考功能演示视频，位于/res/功能演示.mkv 中。
 
 
 
