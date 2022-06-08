@@ -1,96 +1,251 @@
-# Audivier
+## 系统支持平台
 
-#### 介绍
-
-该课题是一个桌面端本地音视频播放器，主要功能是播放视频、音频，管理音视频文件列表等。
-
-**featureUI分支**：主要进行UI界面的显示。
-
-**presentation分支**：主要之后进行有关高级功能的实现，各个功能与featureUI分支对接。
-
-
-
-#### 基础功能
-
-1. **音视频播放**
-
-   1. 支持播放主流的mp4、flv等格式的视频，视频播放帧率不低于30
-   2. 支持播放主流的mp3等格式的音频，支持从音频文件中提取出专辑封面文件作为预览图（部分音频资源具备）
-   3. 支持全屏播放
-
-2. **音视频播放控制**
-
-   
-
-3. 提供一个音量控制滑杆，用于控制播放音量
-
-4. 提供一个播放进度滑杆，用于展示当前播放进度
-
-5. 提供上一首、下一首、播放or暂停按钮，用于控制播放
-
-6. 提供一个切换播放模式的控制按钮，支持只播放当前、顺序播放、随机播放、单个循环播放
-
-7. 提供一个全屏or小屏播放切换按钮，全屏播放时，鼠标移动需要在视频上面展示音视频播放控制小控件，超过5s鼠标不动小控件自动隐藏
-
-8. 支持快捷键草稿
-
-   1. 空格键 播放或暂停
-   2. Ctrl+F 全屏或小屏
-   3. Ctrl+I 唤起资源导入弹窗
-   4. Ctrl+⬅️ 上一首
-   5. Ctrl+➡️ 下一首
-   6. Ctrl+⬆️ 增加音量
-   7. Ctrl+⬇️ 降低音量
-
-3.**媒体库**
-
-1. 支持一个媒体库播放列表，支持拖拽或者点击导入按钮进行导入音视频文件
-2. 播放到媒体库中的对应视频需要有高亮或者选中态等提示
-3. 媒体库列表支持本地缓存，下次启动时需要恢复上一次的列表。存在资源被移动等情况需要有对应的丢失态提示
-
-4.**程序安装包**
-
-1.  支持将整个程序打包成一个安装包程序，安装后在桌面创建一个快捷方式，达到在任意电脑上都能安装和使用
-
-2.  
-
-【挑战⭐️】支持查看媒体信息
-
-1.  右键媒体库列表文件或者其他方式，可以查看文件的详细信息，包括：
-
-2.  文件名
-3.  视频码率、帧率、编码格式、分辨率等等
-4.  音频码率、编码格式、声道数、专辑信息、演唱者信息等等
-
-【挑战⭐️⭐️】支持进度微调
-
-1. 下一帧、上一帧快捷键操作
-2. 下5帧、上5帧快捷键操作
-
-【挑战⭐️⭐️⭐️】支持倍速播放
-
-1.  支持2倍、4倍、8倍的倍速播放
-
-【挑战⭐️⭐️⭐️⭐️】进度条支持预览对应位置的视频缩略图
-
-1.  鼠标停留在进度条的任意位置，展示对应时间点的视频帧缩略图
-
-【挑战⭐️⭐️⭐️⭐️⭐️】支持视频倒放
-
-1.  支持视频倒放，倍速倒放
-
-【挑战⭐️⭐️⭐️⭐️⭐️】支持展示音频波形图
-
-1.  音频播放过程，支持展示波形变化图
+1. 硬件环境
+   1. CPU
+   2. 内存：4G以上内存
+2. 软件环境
+   1. 操作系统：Windows 10.
+   2. C++版本： c++17.
 
 
 
-基础要求
+## 集成环境与动态库文件
 
-1. 具备基本的功能
+| 工具   | 版本   | 组织        | 链接                     |
+| ------ | ------ | ----------- | ------------------------ |
+| QT 6   | 6.2.2  | Qt Company  | https://www.qt.io/zh-cn/ |
+| FFmpeg | 4.3.2  | FFmpeg team | http://ffmpeg.org/       |
+| SDL2   | 2.0.20 | GNU LGPL 2  | http://www.libsdl.org/   |
 
-1. 良好的UI视觉、交互设计
 
-1. 播放不卡顿
 
-1. 功能主路径无闪退
+## 下载使用
+
+
+
+从Audivier项目https://github.com/Perter-Li/Audivier下载项目基础代码
+
+```
+git clone https://github.com/Perter-Li/Audivier.git
+```
+
+
+
+项目树如下
+
+```
+.
+|-- Audivier.ico
+|-- Audivier.pro
+|-- Audivier.pro.user
+|-- Audivier_resource.rc
+|-- Executable
+|   |-- Audivier.exe
+|   `-- Audivier_Win64.zip
+|-- Makefile
+|-- Makefile.Debug
+|-- Makefile.Release
+|-- README.md
+|-- SDL2
+|-- changebuttoncolor.cpp
+|-- changebuttoncolor.h
+|-- debug
+|   |-- Audivier.exe
+|   |-- Audivier_resource_res.o
+|   |-- SDL2.dll
+|   |-- SDL2.lib
+|   |-- SDL2main.lib
+|   |-- SDL2test.lib
+|   |-- avcodec-58.dll
+|   |-- avdevice-58.dll
+|   |-- avfilter-7.dll
+|   |-- avformat-58.dll
+|   |-- avutil-56.dll
+|   |-- changebuttoncolor.o
+|   |-- ffmpeg.exe
+|   |-- ffplay.exe
+|   |-- ffprobe.exe
+|   |-- getframe.o
+|   |-- main.o
+|   |-- mainwindow.o
+|   |-- media.o
+|   |-- moc_changebuttoncolor.cpp
+|   |-- moc_changebuttoncolor.o
+|   |-- moc_getframe.cpp
+|   |-- moc_getframe.o
+|   |-- moc_mainwindow.cpp
+|   |-- moc_mainwindow.o
+|   |-- moc_mylistwidget.cpp
+|   |-- moc_mylistwidget.o
+|   |-- moc_playerslider.cpp
+|   |-- moc_playerslider.o
+|   |-- moc_predefs.h
+|   |-- moc_setvolume.cpp
+|   |-- moc_setvolume.o
+|   |-- moc_setwindow.cpp
+|   |-- moc_setwindow.o
+|   |-- mylistwidget.o
+|   |-- playerslider.o
+|   |-- postproc-55.dll
+|   |-- qrc_images.cpp
+|   |-- qrc_images.o
+|   |-- setvolume.o
+|   |-- setwindow.o
+|   |-- swresample-3.dll
+|   `-- swscale-5.dll
+|-- ffmpeg
+|-- getframe.cpp
+|-- getframe.h
+|-- getframe.ui
+|-- images
+|   |-- 1x.png
+|   |-- 2x.png
+|   |-- 4x.png
+|   |-- FiveFrame.png
+|   |-- FullScreen.png
+|   |-- Information.png
+|   |-- Last.png
+|   |-- MusicAlbums.png
+|   |-- Mute.png
+|   |-- Next.png
+|   |-- OneFrame.png
+|   |-- Play.png
+|   |-- PlayInOrder.png
+|   |-- PlayList.png
+|   |-- PlayRandom.png
+|   |-- PlaySingle.png
+|   |-- PlaySingleCycle.png
+|   |-- Plus.png
+|   |-- Set.png
+|   |-- SmallScreen.png
+|   |-- Stop.png
+|   |-- Voice.png
+|   |-- logo.jpg
+|   `-- style.qss
+|-- images.qrc
+|-- listrightclickmenu.cpp
+|-- listrightclickmenu.h
+|-- main.cpp
+|-- mainwindow.cpp
+|-- mainwindow.h
+|-- mainwindow.ui
+|-- media.cpp
+|-- mylistwidget.cpp
+|-- mylistwidget.h
+|-- object_script.Audivier.Debug
+|-- object_script.Audivier.Release
+|-- playerslider.cpp
+|-- playerslider.h
+|-- release
+|   |-- Audivier.exe
+|   |-- Audivier_resource_res.o
+|   |-- SDL2.dll
+|   |-- SDL2.lib
+|   |-- SDL2main.lib
+|   |-- SDL2test.lib
+|   |-- avcodec-58.dll
+|   |-- avdevice-58.dll
+|   |-- avfilter-7.dll
+|   |-- avformat-58.dll
+|   |-- avutil-56.dll
+|   |-- changebuttoncolor.o
+|   |-- ffmpeg.exe
+|   |-- ffplay.exe
+|   |-- ffprobe.exe
+|   |-- getframe.o
+|   |-- main.o
+|   |-- mainwindow.o
+|   |-- media.o
+|   |-- moc_changebuttoncolor.cpp
+|   |-- moc_changebuttoncolor.o
+|   |-- moc_getframe.cpp
+|   |-- moc_getframe.o
+|   |-- moc_mainwindow.cpp
+|   |-- moc_mainwindow.o
+|   |-- moc_mylistwidget.cpp
+|   |-- moc_mylistwidget.o
+|   |-- moc_playerslider.cpp
+|   |-- moc_playerslider.o
+|   |-- moc_predefs.h
+|   |-- moc_setvolume.cpp
+|   |-- moc_setvolume.o
+|   |-- moc_setwindow.cpp
+|   |-- moc_setwindow.o
+|   |-- mylistwidget.o
+|   |-- playerslider.o
+|   |-- postproc-55.dll
+|   |-- qrc_images.cpp
+|   |-- qrc_images.o
+|   |-- setvolume.o
+|   |-- setwindow.o
+|   |-- swresample-3.dll
+|   `-- swscale-5.dll
+|-- res
+|   |-- Interface.png
+|   |-- pic
+|   `-- project.png
+|-- setvolume.cpp
+|-- setvolume.h
+|-- setvolume.ui
+|-- setwindow.cpp
+|-- setwindow.h
+`-- setwindow.ui
+
+```
+
+
+
+Executable文件中包含着项目可执行文件，其中Audivier.exe可直接运行程序，Audivier_Win64.zip中为项目安装包，可用于选择下载路径以及添加注册表之类的信息。
+
+
+
+
+
+其余部分的为项目的源代码，若想要进行执行，应该提前下载好QT开发环境，并打开Audivier.pro文件。打开成功以后，需要设定一下生成的项目文件路径，否则会出现无法找到动态库的问题。其设置如下，用QT打开本项目需要将项目生成路径设定在*.pro文件同级目录下。其余路保持不变即可，此时便可以正常运行程序代码。
+
+![](/res/pic/project.png)
+
+
+
+如果出现项目无法找到动态库文件的问题，可以将动态库重新自定义添加至项目生成文件，这里主要涉及到两个动态库，ffmpeg和SDL
+
+将动态库文件均进行添加即可。
+
+
+
+ffmpeg
+
+```
+Audivier/ffmpeg/bin
+
+avcodec-58.dll   avformat-58.dll  ffplay.exe       swresample-3.dll
+avdevice-58.dll  avutil-56.dll    ffprobe.exe      swscale-5.dll
+avfilter-7.dll   ffmpeg.exe       postproc-55.dll
+
+```
+
+SDL
+
+```
+Audivier/SDL2/lib/x64
+
+SDL2.dll  SDL2.lib  SDL2main.lib  SDL2test.lib
+```
+
+
+
+## 程序执行界面
+
+当项目执行成功，则会出现如下界面：
+
+![](res/pic/interface.png)
+
+
+
+相关的功能运行，可参考功能演示视频，位于/res/功能演示.mvk 中。
+
+
+
+注：
+
+当前程序无法识别包含中文路径的音视频文件，因此在导入文件时，注意不进行中文的导入即可。
