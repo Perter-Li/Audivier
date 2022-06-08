@@ -238,7 +238,7 @@ SDL2.dll  SDL2.lib  SDL2main.lib  SDL2test.lib
 
 当项目执行成功，则会出现如下界面：
 
-![](res/pic/interface.png)
+![](/res/pic/interface.png)
 
 
 
